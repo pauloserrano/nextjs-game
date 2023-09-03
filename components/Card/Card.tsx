@@ -7,9 +7,14 @@ import styles from "./Card.module.scss"
 
 const font = Comfortaa({ subsets: ["latin"] })
 
-export function Card() {
+interface CardProps {
+  [prop: string]: any
+  isSelected?: boolean
+}
+
+export function Card({ isSelected, ...otherProps }: CardProps) {
   return (
-    <div className={`${styles.container} ${font.className}`}>
+    <div className={`${styles.container} ${font.className} ${isSelected && styles.selected}`} {...otherProps}>
       <Image 
         className={styles.portrait}
         src={hero}

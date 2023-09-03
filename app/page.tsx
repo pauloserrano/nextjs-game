@@ -1,10 +1,15 @@
-import { Card } from "@/components";
+"use client"
+
+import { useGameContext } from "@/hooks";
+import { CombatLayout } from "@/layouts";
+
 
 export default function Home() {
+  const { state } = useGameContext()
+
   return (
-    <main>
-      <Card />
-      Hello World
-    </main>
+    <CombatLayout>
+      { state.value }
+    </CombatLayout>
   )
 }
