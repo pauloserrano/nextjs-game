@@ -1,30 +1,50 @@
-import Image from "next/image"
+import Image, { StaticImageData } from "next/image"
 import { Comfortaa } from "next/font/google"
-import hero from "@/public/assets/images/hero.png"
-
 import styles from "./Card.module.scss"
+import { Character } from "@/types"
 
 
 const font = Comfortaa({ subsets: ["latin"] })
 
 interface CardProps {
   [prop: string]: any
+  character: Character
   isSelected?: boolean
 }
 
-export function Card({ isSelected, ...otherProps }: CardProps) {
+export function Card({ character, isSelected, ...props }: CardProps) {
   return (
-    <div className={`${styles.container} ${font.className} ${isSelected && styles.selected}`} {...otherProps}>
+    <div className={`
+        ${font.className} 
+        ${styles.container} 
+        ${isSelected && styles.selected}
+        ${props.className? props.className : ""}
+      `}
+      {...props}>
       <Image 
         className={styles.portrait}
-        src={hero}
-        alt="hero"
+        src={character.src}
+        alt="Character Portrait"
+        width={768}
+        height={1144}
       />
-      <div className={styles["hp-container"]}>
-        <div className={styles["hp-bar"]}></div>
-        <span className={styles.hp}>HP</span>
-        <span className={styles["hp-amount"]} data-value="2000">2000</span>
-      </div>
+
+      {character.src && 
+        <div className={styles["hp-container"]}>
+          <div 
+            className={styles["hp-bar"]} 
+            data-percentage={`${(character.stats.health.current / character.stats.health.max) * 100}%`}>
+            <div className={styles["hp-fill"]} />
+          </div>
+          <span className={styles.hp}>HP</span>
+          <span 
+            className={styles["hp-amount"]}
+            data-value={character.stats.health.current}
+          >
+              {character.stats.health.current}
+          </span>
+        </div>
+      }
     </div>
   )
 }

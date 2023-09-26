@@ -3,6 +3,7 @@ import { GameContextProvider } from '@/contexts'
 
 import './globals.scss'
 
+
 const font = Inter({ subsets: ['latin'] })
 
 export const metadata = {

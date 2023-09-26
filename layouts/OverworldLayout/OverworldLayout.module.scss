@@ -1,0 +1,44 @@
+@use '../../app/mixins' as *;
+
+.navigation-container {
+  position: absolute;
+  inset: auto auto 1rem 1rem;
+
+  li {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    height: 2.5rem;
+
+
+    p {
+      @include stroke(#000, 1px);
+
+      display: flex;
+      align-items: center;
+      height: 100%;
+
+      font-size: 1.125rem;
+      padding: 0.75em;
+      margin-left: 0.5rem;
+      background: linear-gradient(to right, #000, rgba(0, 0, 0, 0.2));
+      flex: 1;
+    }
+
+    &:not(:last-of-type) {
+      margin-bottom: 1rem;
+    }
+
+    &:hover, &:focus {
+      filter: brightness(0.8);
+    }
+  }
+
+  .icon-container {
+    position: relative;
+    height: 100%;
+    aspect-ratio: 1 / 1;
+    border: 0.25rem transparent solid;
+    background-color: #E8CC70;
+  }
+}

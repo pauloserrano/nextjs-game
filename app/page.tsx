@@ -1,15 +1,20 @@
 "use client"
 
 import { useGameContext } from "@/hooks";
-import { CombatLayout } from "@/layouts";
+import { CombatLayout, DialogueLayout, OverworldLayout } from "@/layouts";
 
 
 export default function Home() {
   const { state } = useGameContext()
 
   return (
-    <CombatLayout>
-      { state.value }
-    </CombatLayout>
+    <OverworldLayout />
+  )
+
+  return (
+    <CombatLayout
+      playerParty={state.characters}
+      enemyParty={state.characters}
+    />
   )
 }

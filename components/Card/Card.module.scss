@@ -1,13 +1,13 @@
-@mixin stroke($color: #000, $size: 1px) {
-  text-shadow:
-    -#{$size} -#{$size} 0 $color,
-     0        -#{$size} 0 $color,
-     #{$size} -#{$size} 0 $color,
-     #{$size}  0        0 $color,
-     #{$size}  #{$size} 0 $color,
-     0         #{$size} 0 $color,
-    -#{$size}  #{$size} 0 $color,
-    -#{$size}  0        0 $color;
+@use '../../app/mixins' as *;
+
+@keyframes example {
+  from {
+    bottom: 0;
+  }
+
+  to {
+    bottom: 1rem;
+  }
 }
 
 .container {
@@ -20,15 +20,9 @@
   overflow: hidden;
 
   background: 
-    // linear-gradient(#F3DE98, #B0733A) content-box,
-    linear-gradient(black, black) padding-box,
-    linear-gradient(to bottom, #F3DE98, #B0733A) border-box
-  ;
-
-  &.selected {
-    background: linear-gradient(to bottom right, blue, red) border-box;
-    bottom: 1rem;
-  }
+    // linear-gradient(#123, #321) content-box,
+    linear-gradient(#222, #222) padding-box,
+    linear-gradient(to bottom, #F3DE98, #B0733A) border-box;
 
   *:not(.portrait) {
     z-index: 1;
@@ -40,6 +34,19 @@
     width: 100%;
     height: 100%;
     background-image: linear-gradient(transparent, transparent, 70%, black);
+  }
+  
+  &.selected {
+    animation: example .2s;
+    background:
+      linear-gradient(black, black) padding-box,
+      linear-gradient(to bottom right, blue, red) border-box;
+    bottom: 1rem;
+
+    
+    &::after {
+      background-image: none;
+    }
   }
 }
 
@@ -96,11 +103,25 @@
   }
 }
 
-.hp-bar {
-  position: relative;
+.hp-bar, .hp-bar::after {
   width: 100%;
   height: 1rem;
   border: 1px solid black;
   border-radius: 0.5rem;
-  background: linear-gradient(#ECF8B0, #90B20C, #C9E187);
+}
+
+.hp-bar {
+  position: relative;
+  background-color: #aaa;
+  overflow: hidden;
+
+  &::after {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    background-color: red;
+    background: linear-gradient(#ECF8B0, #90B20C, #C9E187);
+  }
 }

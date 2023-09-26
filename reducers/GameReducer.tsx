@@ -1,7 +1,8 @@
-import { GameState,} from "@/types"
+import { GameState } from "@/types"
+
 
 export const enum GAME_REDUCER_ACTIONS {
-  EXAMPLE
+  CHANGE_MAP
 }
 
 export interface GameAction {
@@ -11,6 +12,11 @@ export interface GameAction {
 
 export const GameReducer = (state: GameState, action: GameAction): GameState => {
   switch(action.type) {
+    case(GAME_REDUCER_ACTIONS.CHANGE_MAP):
+      return {
+        ...state,
+        currentMap: action.payload
+      }
     default:
       return state
   }

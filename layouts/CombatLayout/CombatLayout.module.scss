@@ -1,11 +1,6 @@
 .container {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  height: 100%;
-  position: relative;
-  background-color: burlywood;
-  overflow: hidden;
 }
 
 .enemy-container, .details-container {
@@ -29,25 +24,19 @@
   display: flex;
   justify-content: center;
   height: 290px;
+  width: min(100%, 1250px);
+  margin-inline: auto;
   background-color: #444;
 
 
   .player-party {
-    display: grid;
-    grid-template-columns: repeat(6, auto);
-    gap: 0.5rem;
-    width: fit-content;
+    display: flex;
+    justify-content: space-evenly;
+    width: 60%;
+    position: relative;
 
     > * {
-      grid-column: span 2;
-    }
-    
-    > *:nth-child(4), > *:nth-child(5) {
-      transform: translateY(-55%)
-    }
-
-    > *:nth-child(4) {
-      grid-column: 2 / span 2;
+      margin-inline: 0.25rem;
     }
   }
 

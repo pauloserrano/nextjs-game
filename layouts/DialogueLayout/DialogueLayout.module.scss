@@ -1,0 +1,55 @@
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.dialogue-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: min(100%, 1000px);
+  min-height: 150px;
+  position: absolute;
+  inset: auto 50% 1rem 50%;
+  transform: translateX(-50%);
+  border: 0.5rem solid #E8CC70;
+  background-color: rgba($color: #000000, $alpha: 0.5);
+
+  .dialogue {
+    width: 100%;
+    padding: 1rem;
+  }
+
+  .dialogue-choices {
+    list-style: decimal inside;
+
+    li {
+      padding: 0.6rem 1rem;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #E8CC70;
+      }
+    }
+  }
+}
+
+.next-btn {
+  position: absolute;
+  inset: auto 0.5rem 0.5rem auto;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 0.25rem solid white;
+  border-left-color: transparent;
+  border-radius: 100%;
+  transform: rotate(45deg);
+  background-color: transparent;
+  transition: .1s linear all;
+  cursor: pointer;
+
+  &:hover, &:focus{
+    filter: brightness(.9);
+    border-width: 0.5rem;
+  }
+}
