@@ -35,11 +35,11 @@ type Map = {
   id: number
   name: string
   src: string
-}
-
-type Icon = {
-  name: string
-  src: string
+  actions: {
+    name: string
+    type: string
+    event: string
+  }[]
 }
 
 type GameState = {
@@ -53,6 +53,5 @@ export type {
   GameState,
   Character,
   Dialogue,
-  Map,
-  Icon
+  Map
 }

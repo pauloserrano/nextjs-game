@@ -7,7 +7,7 @@ import { Demo, Ella, Jule, Outside, Protagonist } from "@/data";
 
 const initialState: GameState = {
   characters: [ Protagonist, Ella, Jule ],
-  currentMap: Outside,
+  currentMap: Demo,
   isCutscenePlaying: false
 }
 
