@@ -1,57 +1,76 @@
-type Character = {
+import { CHARACTERS_ID } from "@/data"
+
+export interface Character {
   id: number
   name: string
   xp: number
-  skills: Skill[]
+  skills: {
+    name: string
+    description: string
+  }[]
   src: string
-  stats: Stats
-}
-
-type Stats = {
-  strength: number
-  speed: number
-  health: {
-    current: number
-    max: number
-  }
-  mana: {
-    current: number
-    max: number
+  stats: {
+    strength: number
+    speed: number
+    health: {
+      current: number
+      max: number
+    }
+    mana: {
+      current: number
+      max: number
+    }
   }
 }
 
-type Skill = {
-  name: string
-  description: string
+export interface Dialogue { 
+  [key: string] : {
+    text: string
+    speakerId?: CHARACTERS_ID
+    choices?: { text: string }[]
+    next: number[] | null
+  }
 }
 
-type Dialogue = {
-  text: string
-  choices?: { text: string }[]
-  next: number[] | null
-}
-
-type Map = {
+export interface Map {
   id: number
   name: string
   src: string
-  actions: {
-    name: string
-    type: string
-    event: string
-  }[]
+  events: Event[]
 }
 
-type GameState = {
+export interface GameState {
   characters: Character[]
   currentMap: Map
-  isCutscenePlaying: boolean
+  events: {
+    current: Event | null,
+    queued: Event[]
+  }
 }
 
+export enum EVENT_TYPES {
+  DIALOGUE = "dialogue",
+  COMBAT = "combat",
+  INTERACT = "interact",
+  TRAVEL = "travel"
+}
 
-export type {
-  GameState,
-  Character,
-  Dialogue,
-  Map
+export interface Event {
+  name: string
+  type: EVENT_TYPES
+  contentId: number
+  content?: any
+}
+
+export interface DialogueEvent extends Event {
+  content: {
+    script: Dialogue
+  }
+}
+
+export interface CombatEvent extends Event{
+  content: {
+    playerParty: Character[]
+    enemyParty: Character[]
+  }
 }

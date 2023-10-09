@@ -3,22 +3,22 @@
 import { useEffect, useState } from "react"
 import { Card } from "@/components"
 import { Layout } from "@/layouts"
-import { Character } from "@/types"
+import { Character, CombatEvent, Event } from "@/types"
 
 import styles from "./CombatLayout.module.scss"
 
+
 interface CombatLayoutProps {
-  children?: React.ReactNode
-  playerParty: Character[]
-  enemyParty: Character[]
+  event: CombatEvent
+  resolve: () => void
 }
 
-export function CombatLayout({ playerParty }: CombatLayoutProps) {
+export function CombatLayout({ event }: CombatLayoutProps) {
   const [iniciative, setIniciative] = useState<Character[]>([])
-  const [test, setTest] = useState<number>(0)
+  const [test, setTest] = useState(0)
 
   useEffect(() => {
-    setIniciative(playerParty)
+    setIniciative(event.content.playerParty)
   }, [])
 
   const handleActive = () => {
@@ -41,7 +41,7 @@ export function CombatLayout({ playerParty }: CombatLayoutProps) {
 
       <section className={styles["player-container"]}>
         <div className={styles["player-party"]}>
-          {playerParty.map(char => (
+          {event.content.playerParty.map(char => (
             <Card 
               key={char.id}
               character={char}

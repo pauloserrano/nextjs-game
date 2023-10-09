@@ -1,3 +1,5 @@
+"use client"
+
 import Image from "next/image"
 import styles from "./Layout.module.scss"
 import { useGameContext } from "@/hooks"
@@ -13,13 +15,13 @@ export function Layout({ children, className, ...props }: LayoutProps) {
 
   return (
     <div className={`${styles.container} ${className ? className : ""}`} {...props}>
+      { children }
       <Image 
         className={styles.map}
         alt={currentMap.name || "map"}
         src={currentMap.src || "/assets/images/maps/demo.png"}
         fill
       />
-      { children }
     </div>
   )
 }

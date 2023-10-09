@@ -2,19 +2,42 @@
 
 import { useGameContext } from "@/hooks";
 import { CombatLayout, DialogueLayout, OverworldLayout } from "@/layouts";
+import { CombatEvent, DialogueEvent, EVENT_TYPES, Event } from "@/types";
 
 
 export default function Home() {
-  const { state } = useGameContext()
+  const { state, actions } = useGameContext()
 
-  return (
-    <OverworldLayout />
-  )
+  const startEvent = (event: Event) => {
+    actions.startEvent(event)
+  }
 
-  return (
-    <CombatLayout
-      playerParty={state.characters}
-      enemyParty={state.characters}
-    />
-  )
+  const currentEvent = state.events.current
+
+  if (currentEvent === null) {
+    return (
+      <OverworldLayout startEvent={startEvent} />
+    )
+  }
+
+  switch(currentEvent.type){
+    case(EVENT_TYPES.DIALOGUE):
+      return (
+        <DialogueLayout 
+          event={currentEvent as DialogueEvent} 
+          resolve={() => {}} 
+        />
+      )
+
+    case(EVENT_TYPES.COMBAT):
+      return (
+        <CombatLayout 
+          event={currentEvent as CombatEvent} 
+          resolve={() => {}} 
+        />
+      )
+
+    default:
+      return
+  }
 }

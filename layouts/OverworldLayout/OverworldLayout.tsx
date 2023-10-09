@@ -1,20 +1,25 @@
+"use client"
+
 import Image from "next/image"
 import { Comfortaa, Volkhov } from "next/font/google"
 import { Layout } from "@/layouts"
-import { useGameContext } from "@/hooks"
-
-import { MAP_ACTION_TYPES, Demo, Outside } from "@/data"
+import { useEvent, useGameContext } from "@/hooks"
 import { Star, Cog, SpeechBubble, Walk } from "@/data/icons"
 
 import styles from "./OverworldLayout.module.scss"
+import { EVENT_TYPES } from "@/types"
 
 
 const comfortaa = Comfortaa({ subsets: ['latin'] })
 const volkhov = Volkhov({ subsets: ["latin"], weight: ["400", "700"]})
 
+interface OverworldLayoutProps {
+  startEvent: any
+}
 
-export function OverworldLayout() {
-  const { state, actions } = useGameContext()
+export function OverworldLayout({ startEvent }: OverworldLayoutProps) {
+  const { state } = useGameContext()
+  const eventHandler = useEvent()
 
   return (
     <Layout className={`${styles.container} ${comfortaa.className}`}>
@@ -25,7 +30,14 @@ export function OverworldLayout() {
       </div>
 
       <ul className={styles["actions-container"]}>
-        {state.currentMap.actions.map((action, id) => <OverworldLayout.ActionButton key={id} action={action} onClick={() => actions.handleMapChange(state.currentMap.name == "Demo" ? Outside : Demo)} />)}
+        {state.currentMap.events.map((event, id) => (
+          <OverworldLayout.ActionButton 
+            key={id} 
+            type={event.type} 
+            name={event.name} 
+            onClick={() => eventHandler(event)} 
+          />
+        ))}
       </ul>
 
       <nav className={styles["nav-container"]}>
@@ -46,7 +58,7 @@ export function OverworldLayout() {
             <SpeechBubble className={styles["chat-icon"]} />
             <Image 
               fill
-              sizes="300px" // TODO - align the portrait sizes with the responsive breakpoints
+              sizes="(max-width: 2000px) 300px" // TODO - align the portrait sizes with the responsive breakpoints
               className={styles.portrait}
               alt={character.name}
               src={character.src}
@@ -60,20 +72,21 @@ export function OverworldLayout() {
 
 
 interface ActionButtonProps { 
-  action: any 
+  type: string
+  name: string
   [prop: string]: any 
 }
 
-OverworldLayout.ActionButton = function ActionButton({ action, ...props }: ActionButtonProps) {
+OverworldLayout.ActionButton = function ActionButton({ type, name, ...props }: ActionButtonProps) {
   return (
     <li {...props}>
       <div className={styles["icon-container"]}>
-        { action.type === MAP_ACTION_TYPES.INTERACT && <Star />}
-        { action.type === MAP_ACTION_TYPES.TALK && <SpeechBubble />}
-        { action.type === MAP_ACTION_TYPES.WALK && <Walk />}
+        {type === EVENT_TYPES.INTERACT && <Star />}
+        {type === EVENT_TYPES.DIALOGUE && <SpeechBubble />}
+        {type === EVENT_TYPES.TRAVEL && <Walk />}
       </div>
       <p>
-        {action.name}
+        {name}
       </p>
     </li>
     )

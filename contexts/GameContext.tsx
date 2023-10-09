@@ -3,12 +3,15 @@
 import { createContext, useReducer } from "react";
 import { GameAction, GameReducer } from "@/reducers";
 import { GameState } from "@/types";
-import { Demo, Ella, Jule, Outside, Protagonist } from "@/data";
+import { characters, maps } from "@/data";
 
 const initialState: GameState = {
-  characters: [ Protagonist, Ella, Jule ],
-  currentMap: Demo,
-  isCutscenePlaying: false
+  characters: [ characters[0], characters[1], characters[2] ],
+  currentMap: maps[0],
+  events: {
+    current: null,
+    queued: []
+  }
 }
 
 interface GameContextState {

@@ -1,3 +1,3 @@
 export * from "./characters"
 export * from "./maps"
-export * from "./dialogues/intro"
+export * from "./dialogues"

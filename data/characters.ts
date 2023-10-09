@@ -1,13 +1,13 @@
 import { Character } from "@/types";
 
-export enum CHARACTERS {
+export enum CHARACTERS_ID {
   HERO,
   ELLA,
   JULE,
 }
 
-export const Protagonist: Character = {
-  id: CHARACTERS.HERO,
+const Protagonist: Character = {
+  id: CHARACTERS_ID.HERO,
   name: "Hero",
   src: "/assets/images/characters/hero.png",
   skills: [{ name: "Example", description: "Lorem Ipsum" }],
@@ -20,8 +20,8 @@ export const Protagonist: Character = {
   xp: 0
 }
 
-export const Ella: Character = {
-  id: CHARACTERS.ELLA,
+const Ella: Character = {
+  id: CHARACTERS_ID.ELLA,
   src: "/assets/images/characters/girl1.png",
   name: "Ella",
   skills: [{ name: "Example2", description: "Lorem Ipsum" }],
@@ -34,8 +34,8 @@ export const Ella: Character = {
   xp: 0
 }
 
-export const Jule: Character = {
-  id: CHARACTERS.JULE,
+const Jule: Character = {
+  id: CHARACTERS_ID.JULE,
   name: "Jule",
   src: "/assets/images/characters/girl3.png",
   skills: [{ name: "Example4", description: "Lorem Ipsum" }],
@@ -46,4 +46,10 @@ export const Jule: Character = {
     strength: 10
   },
   xp: 0,
+}
+
+export const characters = {
+  [CHARACTERS_ID.HERO]: Protagonist,
+  [CHARACTERS_ID.ELLA]: Ella,
+  [CHARACTERS_ID.JULE]: Jule
 }

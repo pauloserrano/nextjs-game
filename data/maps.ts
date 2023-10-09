@@ -1,32 +1,32 @@
-import { Map } from "@/types";
+import { EVENT_TYPES, Map } from "@/types";
+import { DIALOGUE_ID } from "./dialogues";
 
-enum MAPS {
+export enum MAPS_ID {
   DEMO,
   OUTSIDE
 }
 
-export const MAP_ACTION_TYPES = {
-  TALK: "talk",
-  INTERACT: "interact",
-  WALK: "walk"
-}
-
-export const Demo: Map = {
-  id: MAPS.DEMO,
+const Demo: Map = {
+  id: MAPS_ID.DEMO,
   name: "Demo",
   src: "/assets/images/maps/demo.png",
-  actions: [
-    { name: "Notice Board", type: MAP_ACTION_TYPES.INTERACT, event: "" },
-    { name: "Talk to Someone", type: MAP_ACTION_TYPES.TALK, event: "" },
-    { name: "Go Outside", type: MAP_ACTION_TYPES.WALK, event: "" },
+  events: [
+    { name: "Notice Board", type: EVENT_TYPES.INTERACT, contentId: 0 },
+    { name: "Talk to Someone", type: EVENT_TYPES.DIALOGUE, contentId: DIALOGUE_ID.INTRO },
+    { name: "Go Outside", type: EVENT_TYPES.TRAVEL, contentId: MAPS_ID.OUTSIDE },
   ]
 }
 
-export const Outside: Map = {
-  id: MAPS.OUTSIDE,
+const Outside: Map = {
+  id: MAPS_ID.OUTSIDE,
   name: "Outside",
   src: "/assets/images/maps/outside.png",
-  actions: [
-    { name: "Go Inside", type: MAP_ACTION_TYPES.WALK, event: "" }
+  events: [
+    { name: "Go Inside", type: EVENT_TYPES.TRAVEL, contentId: MAPS_ID.DEMO }
   ]
+}
+
+export const maps = {
+  [MAPS_ID.DEMO]: Demo,
+  [MAPS_ID.OUTSIDE]: Outside
 }
