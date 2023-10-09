@@ -1,9 +1,9 @@
 import { GameState } from "@/types"
 
-
 export const enum GAME_REDUCER_ACTIONS {
   CHANGE_MAP,
-  START_EVENT
+  START_EVENT,
+  END_EVENT
 }
 
 export interface GameAction {
@@ -28,6 +28,15 @@ export const GameReducer = (state: GameState, action: GameAction): GameState => 
         },
       }
       
+    case(GAME_REDUCER_ACTIONS.END_EVENT):
+    return {
+      ...state,
+      events: {
+        ...state.events,
+        current: null
+      },
+    }
+
     default:
       return state
   }

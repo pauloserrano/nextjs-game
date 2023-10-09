@@ -3,8 +3,7 @@
 import { useEffect, useState } from "react"
 import { Card } from "@/components"
 import { Layout } from "@/layouts"
-import { Character, CombatEvent, Event } from "@/types"
-
+import { Character, CombatEvent } from "@/types"
 import styles from "./CombatLayout.module.scss"
 
 
@@ -13,7 +12,7 @@ interface CombatLayoutProps {
   resolve: () => void
 }
 
-export function CombatLayout({ event }: CombatLayoutProps) {
+export function CombatLayout({ event, resolve }: CombatLayoutProps) {
   const [iniciative, setIniciative] = useState<Character[]>([])
   const [test, setTest] = useState(0)
 
@@ -53,7 +52,7 @@ export function CombatLayout({ event }: CombatLayoutProps) {
           <li onClick={handleActive}>Attack</li>
           <li>Skills</li>
           <li>Items</li>
-          <li>Run</li>
+          <li onClick={resolve}>Run</li>
         </ul>
       </section>
     </Layout>

@@ -7,16 +7,11 @@ import { CombatEvent, DialogueEvent, EVENT_TYPES, Event } from "@/types";
 
 export default function Home() {
   const { state, actions } = useGameContext()
-
-  const startEvent = (event: Event) => {
-    actions.startEvent(event)
-  }
-
   const currentEvent = state.events.current
 
   if (currentEvent === null) {
     return (
-      <OverworldLayout startEvent={startEvent} />
+      <OverworldLayout />
     )
   }
 
@@ -25,7 +20,7 @@ export default function Home() {
       return (
         <DialogueLayout 
           event={currentEvent as DialogueEvent} 
-          resolve={() => {}} 
+          resolve={actions.endEvent} 
         />
       )
 
@@ -33,11 +28,11 @@ export default function Home() {
       return (
         <CombatLayout 
           event={currentEvent as CombatEvent} 
-          resolve={() => {}} 
+          resolve={actions.endEvent} 
         />
       )
-
+      
     default:
-      return
+      break
   }
 }

@@ -1,11 +1,12 @@
 "use client"
 
 import Image from "next/image"
-import { useState } from "react"
 import { Layout } from "@/layouts"
 import { CHARACTERS_ID, characters } from "@/data"
-import { DialogueEvent, Event } from "@/types"
+import { DialogueEvent } from "@/types"
 import styles from "./DialogueLayout.module.scss"
+import { useDialogue } from "@/hooks/useDialogue"
+
 
 interface DialogueLayoutProps {
   event: DialogueEvent
@@ -13,17 +14,10 @@ interface DialogueLayoutProps {
 }
 
 export function DialogueLayout({ event, resolve }: DialogueLayoutProps) {
-  const [dialogue, setDialogue] = useState(event.content.script[0])
-
-  const handleDialogue = (id?: number) => {
-    if (dialogue.next === null) {
-      return resolve()
-    }
-
-    const nextIndex = dialogue.next[id || 0]
-
-    setDialogue(() => event.content.script[nextIndex])
-  }
+  const { dialogue, handleDialogue } = useDialogue({ 
+    script: event.content.script, 
+    onEnd: resolve 
+  })
 
   return (
     <Layout className={styles.container}>

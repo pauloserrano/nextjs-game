@@ -17,11 +17,16 @@ export function useGameContext() {
     dispatch({ type: GAME_REDUCER_ACTIONS.START_EVENT, payload: event })
   }
 
+  const endEvent = () => {
+    dispatch({ type: GAME_REDUCER_ACTIONS.END_EVENT })
+  }
+
   return { 
     state, 
     actions: {
       changeMap,
-      startEvent
+      startEvent,
+      endEvent
     }
   }
 }

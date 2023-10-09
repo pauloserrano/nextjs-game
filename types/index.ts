@@ -1,5 +1,18 @@
 import { CHARACTERS_ID } from "@/data"
 
+
+export interface GameState {
+  characters: {
+    active: Character[],
+    idle: Character[]
+  }
+  currentMap: Map
+  events: {
+    current: Event | null,
+    queued: Event[]
+  }
+}
+
 export interface Character {
   id: number
   name: string
@@ -37,15 +50,6 @@ export interface Map {
   name: string
   src: string
   events: Event[]
-}
-
-export interface GameState {
-  characters: Character[]
-  currentMap: Map
-  events: {
-    current: Event | null,
-    queued: Event[]
-  }
 }
 
 export enum EVENT_TYPES {

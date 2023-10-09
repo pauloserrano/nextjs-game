@@ -6,7 +6,10 @@ import { GameState } from "@/types";
 import { characters, maps } from "@/data";
 
 const initialState: GameState = {
-  characters: [ characters[0], characters[1], characters[2] ],
+  characters: { 
+    active: [ characters[0], characters[1], characters[2] ],
+    idle: []
+  },
   currentMap: maps[0],
   events: {
     current: null,

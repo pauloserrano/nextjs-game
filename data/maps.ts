@@ -12,6 +12,7 @@ const Demo: Map = {
   src: "/assets/images/maps/demo.png",
   events: [
     { name: "Notice Board", type: EVENT_TYPES.INTERACT, contentId: 0 },
+    { name: "Training Grounds", type: EVENT_TYPES.COMBAT, contentId: 0 },
     { name: "Talk to Someone", type: EVENT_TYPES.DIALOGUE, contentId: DIALOGUE_ID.INTRO },
     { name: "Go Outside", type: EVENT_TYPES.TRAVEL, contentId: MAPS_ID.OUTSIDE },
   ]

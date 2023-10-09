@@ -1,9 +1,9 @@
 import { DIALOGUE_ID, MAPS_ID, dialogues, maps } from "@/data"
-import { DialogueEvent, EVENT_TYPES, Event } from "@/types"
+import { CombatEvent, DialogueEvent, EVENT_TYPES, Event } from "@/types"
 import { useGameContext } from "./useGameContext"
 
 export function useEvent() {
-  const { actions } = useGameContext()
+  const { state, actions } = useGameContext()
 
   const eventHandler = (event: Event) => {
     switch(event.type){
@@ -19,9 +19,20 @@ export function useEvent() {
         }
         
         return actions.startEvent(dialogue)
+
+      case(EVENT_TYPES.COMBAT):
+        const combat: CombatEvent = {
+          ...event,
+          content: {
+            playerParty: state.characters.active,
+            enemyParty: state.characters.active
+          }
+        }
+        return actions.startEvent(combat)
       
       default:
-        return actions.startEvent(event)
+        return alert(`Event "${event.type}" is not supported by useEvent yet.`)
+
     }
   }
 
