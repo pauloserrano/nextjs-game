@@ -7,7 +7,7 @@ import { characters, maps } from "@/data";
 
 const initialState: GameState = {
   characters: { 
-    active: [ characters[0], characters[1], characters[2] ],
+    active: [ characters[0], characters[1], characters[2], characters[0] ],
     idle: []
   },
   currentMap: maps[0],

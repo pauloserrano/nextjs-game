@@ -1,5 +1,9 @@
-export function useCombat() {
-  return (
-    "Nothing to see here yet"
-  )
+interface useCombatProps {
+
+}
+
+export function useCombat({}: useCombatProps) {
+  
+
+  return true
 }
