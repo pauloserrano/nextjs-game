@@ -1,26 +1,38 @@
 import { useState } from "react";
-import { Dialogue } from "@/types";
+import { Dialogue, Character } from "@/types";
+import { characters } from "@/data";
 
 interface useDialogueProps {
   script: Dialogue
-  onEnd: () => void
+  end: () => void
 }
 
-export function useDialogue({ script, onEnd }: useDialogueProps) {
+export function useDialogue({ script, end }: useDialogueProps) {
   const [dialogue, setDialogue] = useState(script[0])
+  const [speakers, setSpeakers] = useState<[Character?, Character?]>([])
 
-  const handleDialogue = (id?: number) => {
+  const next = (key?: number) => {
     if (dialogue.next === null) {
-      return onEnd()
+      return end()
     }
 
-    const nextIndex = dialogue.next[id || 0]
+    const nextLine = getDialogue(key)
+    setDialogue(nextLine)
+  }
 
-    setDialogue(() => script[nextIndex])
+  const getDialogue = (key?: number) => {
+    return script[dialogue.next![key || 0]]
+  }
+
+  const getSpeakers = (line: typeof dialogue) => {
+    if (!line.speakerId) return undefined
+    
+    return characters[line.speakerId]
   }
 
   return {
     dialogue,
-    handleDialogue
+    speakers,
+    next
   }
 }

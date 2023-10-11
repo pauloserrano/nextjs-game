@@ -27,13 +27,13 @@ export function OverworldLayout({ }: OverworldLayoutProps) {
         <div className={styles["daytime-container"]}>
           <Sun className={styles["daytime-icon"]} />
         </div>
-        <h3>{state.currentMap.name}</h3>
+        <h3>{state.currentMap?.name}</h3>
         <hr />
         <p>{state.daytime}</p>
       </div>
 
       <ul className={styles["actions-container"]}>
-        {state.currentMap.events.map((event, id) => (
+        {state.currentMap?.events.map((event, id) => (
           <OverworldLayout.ActionButton 
             key={id} 
             type={event.type} 

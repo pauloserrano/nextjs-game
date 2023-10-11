@@ -1,13 +1,22 @@
 "use client"
 
-import { useGameContext } from "@/hooks";
+import { CHARACTERS_ID, MAPS_ID, characters, maps } from "@/data";
+import { useFactory, useGameContext } from "@/hooks";
 import { CombatLayout, DialogueLayout, OverworldLayout } from "@/layouts";
-import { CombatEvent, DialogueEvent, EVENT_TYPES, Event } from "@/types";
+import { CombatEvent, DAYTIMES, DialogueEvent, EVENT_TYPES } from "@/types";
+import { useEffect } from "react";
 
 
 export default function Home() {
   const { state, actions } = useGameContext()
+  const { create } = useFactory()
   const currentEvent = state.events.current
+
+  useEffect(() => {
+    actions.changeMap(maps[MAPS_ID.DEMO])
+    actions.addToParty(create.characterSheet(characters[CHARACTERS_ID.HERO]))
+    actions.setDaytime(DAYTIMES.MORNING)
+  }, [])
 
   if (currentEvent === null) {
     return (

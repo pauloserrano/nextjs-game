@@ -1,10 +1,5 @@
-import { Inter } from 'next/font/google'
 import { GameContextProvider } from '@/contexts'
-
 import './globals.scss'
-
-
-const font = Inter({ subsets: ['latin'] })
 
 export const metadata = {
   title: 'My RPG',
@@ -18,7 +13,7 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
-      <body className={font.className}>
+      <body>
         <GameContextProvider>
           {children}
         </GameContextProvider>
