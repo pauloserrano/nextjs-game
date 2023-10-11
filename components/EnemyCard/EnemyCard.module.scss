@@ -72,6 +72,16 @@
     progress {
       grid-column: span 2;
     }
+    
+    ::-moz-progress-bar, ::-webkit-progress-value {
+      background: linear-gradient(#ECF8B0, #90B20C, #C9E187);
+    }
+    
+    progress[value] {
+      height: 1rem;
+      border: 1px solid black;
+      border-radius: 0.25rem;
+    }
 
     label, p {
       @include stroke(#000, 1px);

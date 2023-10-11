@@ -4,7 +4,7 @@ import Image from "next/image"
 import { Comfortaa, Volkhov } from "next/font/google"
 import { Layout } from "@/layouts"
 import { useEvent, useGameContext } from "@/hooks"
-import { Star, Cog, SpeechBubble, Walk } from "@/data/icons"
+import { Star, Cog, SpeechBubble, Walk, CrossedSwords, Sun } from "@/data/icons"
 
 import styles from "./OverworldLayout.module.scss"
 import { EVENT_TYPES } from "@/types"
@@ -24,9 +24,12 @@ export function OverworldLayout({ }: OverworldLayoutProps) {
   return (
     <Layout className={`${styles.container} ${comfortaa.className}`}>
       <div className={`${styles["info-container"]} ${volkhov.className}`}>
+        <div className={styles["daytime-container"]}>
+          <Sun className={styles["daytime-icon"]} />
+        </div>
         <h3>{state.currentMap.name}</h3>
         <hr />
-        <p>Afternoon</p>
+        <p>{state.daytime}</p>
       </div>
 
       <ul className={styles["actions-container"]}>
@@ -84,6 +87,7 @@ OverworldLayout.ActionButton = function ActionButton({ type, name, ...props }: A
         {type === EVENT_TYPES.INTERACT && <Star />}
         {type === EVENT_TYPES.DIALOGUE && <SpeechBubble />}
         {type === EVENT_TYPES.TRAVEL && <Walk />}
+        {type === EVENT_TYPES.COMBAT && <CrossedSwords />}
       </div>
       <p>
         {name}

@@ -10,7 +10,12 @@ const Protagonist: Character = {
   id: CHARACTERS_ID.HERO,
   name: "Hero",
   src: "/assets/images/characters/hero.png",
-  skills: [{ name: "Example", description: "Lorem Ipsum" }],
+  skills: [
+    { name: "Heavy Attack", description: "Lorem Ipsum" }, 
+    { name: "Heavy Attack", description: "Lorem Ipsum" }, 
+    { name: "Heavy Attack", description: "Lorem Ipsum" },
+    { name: "Heavy Attack", description: "Lorem Ipsum" },
+  ],
   stats: {
     health: { current: 2000, max: 3000 },
     mana: { current: 100, max: 100 },

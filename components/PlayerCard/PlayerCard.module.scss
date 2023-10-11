@@ -59,11 +59,45 @@
 }
 
 .hp-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.25rem;
   width: 100%;
-  position: absolute;
+  position: relative;
   top: 100px;
   padding: 0.25rem;
+  margin-top: 4px;
+
+  progress, progress[value] {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  progress {
+    grid-column: span 2;
+  }
+
+  ::-moz-progress-bar, ::-webkit-progress-value {
+    background: linear-gradient(#ECF8B0, #90B20C, #C9E187);
+  }
+ 
+  progress[value] {
+    height: 1rem;
+    border: 1px solid black;
+    border-radius: 0.5rem;
+  }
+
+  label, p {
+    @include stroke(#000, 1px);
+
+    padding-inline: 0.5rem;
+  }
+
+  p {
+    justify-self: end;
+  }
 }
+
 
 .hp, .hp-amount {
   @include stroke(#000, 1.5px);
@@ -100,28 +134,5 @@
 
   &::before {
     content: attr(data-value);
-  }
-}
-
-.hp-bar, .hp-bar::after {
-  width: 100%;
-  height: 1rem;
-  border: 1px solid black;
-  border-radius: 0.5rem;
-}
-
-.hp-bar {
-  position: relative;
-  background-color: #aaa;
-  overflow: hidden;
-
-  &::after {
-    position: absolute;
-    content: "";
-    width: 100%;
-    height: 100%;
-    border-radius: 0;
-    background-color: red;
-    background: linear-gradient(#ECF8B0, #90B20C, #C9E187);
   }
 }

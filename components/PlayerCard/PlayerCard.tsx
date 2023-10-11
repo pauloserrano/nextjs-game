@@ -7,20 +7,14 @@ import styles from "./PlayerCard.module.scss"
 const font = Comfortaa({ subsets: ["latin"] })
 
 interface PlayerCardProps {
-  [prop: string]: any
   character: Character
   isSelected?: boolean
+  [prop: string]: any
 }
 
 export function PlayerCard({ character, isSelected, ...props }: PlayerCardProps) {
   return (
-    <div className={`
-        ${font.className} 
-        ${styles.container} 
-        ${isSelected && styles.selected}
-        ${props.className? props.className : ""}
-      `}
-      {...props}>
+    <div className={`${styles.container} ${font.className} ${isSelected && styles.selected} ${props.className && props.className}`} {...props}>
       <Image 
         className={styles.portrait}
         src={character.src}
@@ -28,23 +22,13 @@ export function PlayerCard({ character, isSelected, ...props }: PlayerCardProps)
         width={768}
         height={1144}
       />
-
-      {character.src && 
-        <div className={styles["hp-container"]}>
-          <div 
-            className={styles["hp-bar"]} 
-            data-percentage={`${(character.stats.health.current / character.stats.health.max) * 100}%`}>
-            <div className={styles["hp-fill"]} />
-          </div>
-          <span className={styles.hp}>HP</span>
-          <span 
-            className={styles["hp-amount"]}
-            data-value={character.stats.health.current}
-          >
-              {character.stats.health.current}
-          </span>
-        </div>
-      }
+      <div className={styles["hp-container"]}>
+        <progress id="hp-bar" value={character.stats.health.current} max={character.stats.health.max} />
+        <label htmlFor="hp-bar" className={styles.hp}>HP</label>
+        <p className={styles["hp-amount"]} data-value={character.stats.health.current}>
+          {character.stats.health.current}
+        </p>
+      </div>
     </div>
   )
 }

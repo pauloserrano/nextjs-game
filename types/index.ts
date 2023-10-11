@@ -1,5 +1,10 @@
 import { CHARACTERS_ID } from "@/data"
 
+export enum DAYTIMES {
+  MORNING = "Morning",
+  AFTERNOON = "Afternoon",
+  NIGHT = "Night",
+}
 
 export interface GameState {
   characters: {
@@ -7,6 +12,7 @@ export interface GameState {
     idle: Character[]
   }
   currentMap: Map
+  daytime: string
   events: {
     current: Event | null,
     queued: Event[]

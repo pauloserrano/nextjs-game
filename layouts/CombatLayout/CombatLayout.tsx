@@ -1,14 +1,11 @@
 "use client"
 
 import { Comfortaa } from "next/font/google"
-import { useEffect, useState } from "react"
-import { PlayerCard } from "@/components"
+import { PlayerCard, EnemyCard, SkillModal } from "@/components"
 import { Layout } from "@/layouts"
-import { Character, CombatEvent } from "@/types"
-import styles from "./CombatLayout.module.scss"
+import { CombatEvent } from "@/types"
 import { Star, Walk } from "@/data/icons"
-import EnemyCard from "@/components/EnemyCard/EnemyCard"
-
+import styles from "./CombatLayout.module.scss"
 
 const comfortaa = Comfortaa({ subsets: ['latin'] })
 
@@ -18,48 +15,31 @@ interface CombatLayoutProps {
 }
 
 export function CombatLayout({ event, resolve }: CombatLayoutProps) {
-  const [iniciative, setIniciative] = useState<Character[]>([])
-  const [test, setTest] = useState(0)
-
-  useEffect(() => {
-    setIniciative(event.content.playerParty)
-  }, [])
-
-  const handleActive = () => {
-    if (test < iniciative.length - 1) {
-      return setTest(prev => ++prev)
-    }
-
-    return setTest(0)
-  }
-
   return (
     <Layout className={styles.container}>
       <section className={styles["enemy-container"]}>
-        <EnemyCard character={event.content.enemyParty[0]} />
-        <EnemyCard character={event.content.enemyParty[0]} />
-        <EnemyCard character={event.content.enemyParty[0]} />
-        <EnemyCard character={event.content.enemyParty[0]} />
-        <EnemyCard character={event.content.enemyParty[0]} />
+        {event.content.enemyParty.map(character => (
+          <EnemyCard key={character.id} character={character} />
+        ))}
       </section>
       
       <section className={styles["details-container"]}>
-        Details {iniciative[test]?.skills[0].name}
+        <SkillModal skills={event.content.playerParty[0].skills} />
       </section>
 
       <section className={styles["player-container"]}>
         <div className={styles["player-party"]}>
-          {event.content.playerParty.map(char => (
+          {event.content.playerParty.map(character => (
             <PlayerCard 
-              key={char.id}
-              character={char}
-              isSelected={char === iniciative[test]}
+              key={character.id}
+              character={character}
+              isSelected={false}
             />
           ))}
         </div>
 
         <ul className={`${styles["action-menu"]} ${comfortaa.className}`}>
-          <li onClick={handleActive}>
+          <li>
             <button>
               <Star />
               <p>Attack</p>

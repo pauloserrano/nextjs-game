@@ -2,15 +2,16 @@
 
 import { createContext, useReducer } from "react";
 import { GameAction, GameReducer } from "@/reducers";
-import { GameState } from "@/types";
+import { DAYTIMES, GameState } from "@/types";
 import { characters, maps } from "@/data";
 
 const initialState: GameState = {
   characters: { 
-    active: [ characters[0], characters[1], characters[2], characters[0] ],
+    active: [ characters[0], characters[1], characters[2] ],
     idle: []
   },
   currentMap: maps[0],
+  daytime: DAYTIMES.MORNING,
   events: {
     current: null,
     queued: []
