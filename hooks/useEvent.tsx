@@ -9,7 +9,7 @@ export function useEvent() {
     switch(event.type){
       case(EVENT_TYPES.TRAVEL):
         const mapId: MAPS_ID = event.contentId
-        return actions.changeMap(maps[mapId])
+        return actions.setMap(maps[mapId])
       
       case(EVENT_TYPES.DIALOGUE):
         const dialogueId: DIALOGUE_ID = event.contentId

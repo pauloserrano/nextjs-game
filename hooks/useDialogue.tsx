@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Dialogue, Character } from "@/types";
 import { characters } from "@/data";
 
@@ -8,8 +8,10 @@ interface useDialogueProps {
 }
 
 export function useDialogue({ script, end }: useDialogueProps) {
-  const [dialogue, setDialogue] = useState(script[0])
+  const [dialogue, setDialogue] = useState(script["KEY_1"])
   const [speakers, setSpeakers] = useState<[Character?, Character?]>([])
+
+  useEffect(() => console.log(dialogue), [])
 
   const next = (key?: number) => {
     if (dialogue.next === null) {

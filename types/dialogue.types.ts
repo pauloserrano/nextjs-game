@@ -5,6 +5,12 @@ export interface Dialogue {
     text: string
     speakerId?: CHARACTERS_ID
     choices?: { text: string }[]
-    next: number[] | null
+    next: string[] | null
   }
+}
+
+export interface rawDialogue {
+  text: string,
+  speakerId?: number,
+  choices?: rawDialogue[]
 }

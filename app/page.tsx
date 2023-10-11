@@ -1,22 +1,31 @@
 "use client"
 
-import { CHARACTERS_ID, MAPS_ID, characters, maps } from "@/data";
+import { useEffect } from "react";
 import { useFactory, useGameContext } from "@/hooks";
 import { CombatLayout, DialogueLayout, OverworldLayout } from "@/layouts";
-import { CombatEvent, DAYTIMES, DialogueEvent, EVENT_TYPES } from "@/types";
-import { useEffect } from "react";
+import { CHARACTERS_ID, DIALOGUE_ID, MAPS_ID, characters, dialogues, maps } from "@/data";
+import { CombatEvent, DAYTIMES, Dialogue, DialogueEvent, EVENT_TYPES } from "@/types";
 
 
 export default function Home() {
   const { state, actions } = useGameContext()
   const { create } = useFactory()
-  const currentEvent = state.events.current
 
   useEffect(() => {
-    actions.changeMap(maps[MAPS_ID.DEMO])
-    actions.addToParty(create.characterSheet(characters[CHARACTERS_ID.HERO]))
+    actions.setMap(maps[MAPS_ID.DEMO])
+    actions.setParty([ create.characterSheet(characters[CHARACTERS_ID.HERO]) ])
     actions.setDaytime(DAYTIMES.MORNING)
+
+    const demoEvent: DialogueEvent = {
+      contentId: 0,
+      name: "lorem ipsum",
+      type: EVENT_TYPES.DIALOGUE,
+      content: { script: dialogues[DIALOGUE_ID.INTRO] }
+    }
+    actions.startEvent(demoEvent)
   }, [])
+
+  const currentEvent = state.events.current
 
   if (currentEvent === null) {
     return (

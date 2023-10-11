@@ -18,7 +18,7 @@ export function DialogueLayout({ event, resolve }: DialogueLayoutProps) {
     script: event.content.script, 
     end: resolve 
   })
-
+  
   return (
     <Layout className={styles.container}>
       <div className={`${styles["player-side"]} ${styles.active}`}>
@@ -31,7 +31,7 @@ export function DialogueLayout({ event, resolve }: DialogueLayoutProps) {
         />
       </div>
 
-      {dialogue.speakerId && (
+      {(dialogue.speakerId) && (
         <div className={styles["npc-side"]}>
         <Image 
             className={styles.portrait}

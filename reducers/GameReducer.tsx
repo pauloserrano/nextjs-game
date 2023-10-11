@@ -1,10 +1,11 @@
 import { CharacterSheet, GameState } from "@/types"
 
 export const enum GAME_REDUCER_ACTIONS {
-  CHANGE_MAP,
+  SET_MAP,
   START_EVENT,
   END_EVENT,
   ADD_TO_PARTY,
+  SET_PARTY,
   SET_DAYTIME,
 }
 
@@ -15,7 +16,7 @@ export interface GameAction {
 
 export const GameReducer = (state: GameState, action: GameAction): GameState => {
   switch(action.type) {
-    case(GAME_REDUCER_ACTIONS.CHANGE_MAP):
+    case(GAME_REDUCER_ACTIONS.SET_MAP):
       return {
         ...state,
         currentMap: action.payload
@@ -46,6 +47,16 @@ export const GameReducer = (state: GameState, action: GameAction): GameState => 
         characters: {
           ...state.characters,
           active: [...state.characters.active, partyMember]
+        }
+      }
+    
+    case(GAME_REDUCER_ACTIONS.SET_PARTY):
+      const party: CharacterSheet[] = action.payload
+      return {
+        ...state,
+        characters: {
+          ...state.characters,
+          active: party
         }
       }
     

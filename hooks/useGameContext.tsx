@@ -9,8 +9,8 @@ import { CharacterSheet, DAYTIMES, Event, Map } from '@/types'
 export function useGameContext() {
   const { state, dispatch }  = useContext(GameContext)
 
-  const changeMap = (map: Map) => {
-    dispatch({ type: GAME_REDUCER_ACTIONS.CHANGE_MAP, payload: map })
+  const setMap = (map: Map) => {
+    dispatch({ type: GAME_REDUCER_ACTIONS.SET_MAP, payload: map })
   }
 
   const startEvent = (event: Event) => {
@@ -25,6 +25,10 @@ export function useGameContext() {
     dispatch({ type: GAME_REDUCER_ACTIONS.ADD_TO_PARTY, payload: character })
   }
 
+  const setParty = (party: CharacterSheet[]) => {
+    dispatch({ type: GAME_REDUCER_ACTIONS.SET_PARTY, payload: party })
+  }
+
   const setDaytime = (daytime: DAYTIMES) => {
     dispatch({ type: GAME_REDUCER_ACTIONS.SET_DAYTIME, payload: daytime })
   }
@@ -32,10 +36,11 @@ export function useGameContext() {
   return { 
     state, 
     actions: {
-      changeMap,
+      setMap,
       startEvent,
       endEvent,
       addToParty,
+      setParty,
       setDaytime
     }
   }
