@@ -1,11 +1,6 @@
-import { Dialogue, rawDialogue } from "@/types";
-import { intro } from "./intro";
+import { Dialogue, rawDialogue } from "@/types"
 
-export enum DIALOGUE_ID {
-  INTRO
-}
-
-const formatDialogue = (raw: rawDialogue[]): Dialogue => {
+export const formatDialogue = (raw: rawDialogue[]): Dialogue => {
   const hash: {[key: string]: any} = {}
   let currentKey = 1
 
@@ -38,8 +33,4 @@ const formatDialogue = (raw: rawDialogue[]): Dialogue => {
   }
   
   return hash
-}
-
-export const dialogues = {
-  [DIALOGUE_ID.INTRO]: formatDialogue(intro),
 }

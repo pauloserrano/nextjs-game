@@ -6,7 +6,6 @@ export enum CHARACTERS_ID {
   ELOISE,
   AYLA,
   TALIA,
-  SAMANTHA,
   AEDINA,
 }
 
