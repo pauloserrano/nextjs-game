@@ -24,8 +24,8 @@ export function DialogueLayout({ event, resolve }: DialogueLayoutProps) {
       <div className={`${styles["player-side"]} ${styles.active}`}>
         <Image 
           className={styles.portrait}
-          src={characters[CHARACTERS_ID.HERO].src}
-          alt={characters[CHARACTERS_ID.HERO].name}
+          src={characters[CHARACTERS_ID.ARION].src}
+          alt={characters[CHARACTERS_ID.ARION].name}
           width={768}
           height={1144} 
         />

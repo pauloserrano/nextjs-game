@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useFactory, useGameContext } from "@/hooks";
 import { CombatLayout, DialogueLayout, OverworldLayout } from "@/layouts";
 import { CHARACTERS_ID, DIALOGUE_ID, MAPS_ID, characters, dialogues, maps } from "@/data";
-import { CombatEvent, DAYTIMES, Dialogue, DialogueEvent, EVENT_TYPES } from "@/types";
+import { CombatEvent, DAYTIMES, DialogueEvent, EVENT_TYPES } from "@/types";
 
 
 export default function Home() {
@@ -13,7 +13,7 @@ export default function Home() {
 
   useEffect(() => {
     actions.setMap(maps[MAPS_ID.DEMO])
-    actions.setParty([ create.characterSheet(characters[CHARACTERS_ID.HERO]) ])
+    actions.setParty([ create.characterSheet(characters[CHARACTERS_ID.ARION]) ])
     actions.setDaytime(DAYTIMES.MORNING)
 
     const demoEvent: DialogueEvent = {

@@ -28,6 +28,6 @@ const Outside: Map = {
 }
 
 export const maps = {
-  [MAPS_ID.DEMO]: Demo,
-  [MAPS_ID.OUTSIDE]: Outside
+  [Demo.id]: Demo,
+  [Outside.id]: Outside
 }
