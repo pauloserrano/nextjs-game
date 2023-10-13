@@ -45,7 +45,9 @@ export function DialogueLayout({ event, resolve }: DialogueLayoutProps) {
 
 
       <section className={styles["dialogue-container"]}>
-        <div className={styles.dialogue}>{dialogue.text}</div>
+        <p className={`${styles.dialogue} ${styles[dialogue.type as string]}`}>
+          {dialogue.text}
+        </p>
 
         {dialogue.choices 
          ? (<>

@@ -28,7 +28,7 @@
 [![Typescript][Typescript-badge]][Typescript-url]&nbsp;
 [![EsLint][EsLint-badge]][EsLint-url]&nbsp;
 
-<!-- TO BE IMPLEMENTED: [![MongoDB][MongoDB-badge]][MongoDB-url]&nbsp; -->
+<!-- LATER: [![MongoDB][MongoDB-badge]][MongoDB-url]&nbsp; -->
 
 <br />
 

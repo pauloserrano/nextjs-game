@@ -31,8 +31,7 @@ export function useEvent() {
         return actions.startEvent(combat)
       
       default:
-        return alert(`Event "${event.type}" is not supported by useEvent yet.`)
-
+        return alert(`Event "${event.type}" has not been implemented by useEvent as of now.`)
     }
   }
 

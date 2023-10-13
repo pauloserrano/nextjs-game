@@ -1,5 +1,5 @@
-import { rawDialogue } from "@/types";
-import { formatDialogue } from "@/utils";
+import { TEXT_TYPE, rawDialogue } from "@/types";
+import { formatDialogue, getNameById } from "@/utils";
 import { CHARACTERS_ID } from "./characters";
 
 export enum DIALOGUE_ID {
@@ -7,6 +7,8 @@ export enum DIALOGUE_ID {
 }
 
 const intro: rawDialogue[] = [
+  { text: `${getNameById(CHARACTERS_ID.ARION)}, wake up...`, speakerId: CHARACTERS_ID.AYLA },
+  { text: `Sample thought`, type: TEXT_TYPE.THOUGHT },
   {
     text: "That was fast, you're getting good at this",
     speakerId: CHARACTERS_ID.AYLA,
