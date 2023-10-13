@@ -9,17 +9,25 @@ export interface Dialogue {
   [key: string] : DialogueLine
 }
 
+interface DialogueChoice extends Omit<DialogueLine, "choices"> {
+  preview?: string
+}
+
 export interface DialogueLine {
-  text: string | string[]
+  text: string[]
   type: TEXT_TYPE
   speakerId?: CHARACTERS_ID
-  choices?: Omit<DialogueLine, "choices">[]
+  choices?: DialogueChoice[]
   next: string[] | null
 }
 
-export interface rawDialogue {
-  text: string | string[],
+interface RawDialogueChoice extends Omit<RawDialogue, "choices"> {
+  preview?: string
+}
+
+export interface RawDialogue {
+  text: string[],
   type?: TEXT_TYPE
   speakerId?: CHARACTERS_ID,
-  choices?: Omit<rawDialogue, "choices">[]
+  choices?: RawDialogueChoice[]
 }

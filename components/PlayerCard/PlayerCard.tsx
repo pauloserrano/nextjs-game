@@ -1,13 +1,13 @@
 import Image from "next/image"
 import { Comfortaa } from "next/font/google"
-import { Character } from "@/types"
+import { CharacterSheet } from "@/types"
 import styles from "./PlayerCard.module.scss"
 
 
 const font = Comfortaa({ subsets: ["latin"] })
 
 interface PlayerCardProps {
-  character: Character
+  character: CharacterSheet
   isSelected?: boolean
   [prop: string]: any
 }

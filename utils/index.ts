@@ -1,5 +1,5 @@
 import { CHARACTERS_ID, characters } from "@/data"
-import { Character, Dialogue, TEXT_TYPE, rawDialogue } from "@/types"
+import { Character, Dialogue, TEXT_TYPE, RawDialogue } from "@/types"
 
 
 export const getNameById = (id: CHARACTERS_ID): string => {
@@ -10,7 +10,7 @@ export const getCharacterById = (id: CHARACTERS_ID): Character => {
   return characters[id]
 }
 
-export const formatDialogue = (raw: rawDialogue[]): Dialogue => {
+export const formatDialogue = (raw: RawDialogue[]): Dialogue => {
   const hash: any = {}
   let key = 1
 
@@ -25,6 +25,7 @@ export const formatDialogue = (raw: rawDialogue[]): Dialogue => {
     }
 
     const hasChoices = (raw[i].choices !== undefined)
+
     if (!hasChoices && !isLast) {
       hash[`KEY_${key}`].next!.push(`KEY_${++key}`)
       continue
@@ -32,8 +33,10 @@ export const formatDialogue = (raw: rawDialogue[]): Dialogue => {
 
     for(let j = 0; j < raw[i].choices?.length!; j++){
       const letter = String.fromCharCode("A".charCodeAt(0) + j);
-      const choiceKey = `KEY_${key}${letter}`
       const choice = raw[i].choices![j]
+      const choiceKey = `KEY_${key}${letter}`
+      
+      choice.type = choice.type || TEXT_TYPE.SPEECH
       
       hash[choiceKey] = {
         ...choice,
@@ -43,10 +46,10 @@ export const formatDialogue = (raw: rawDialogue[]): Dialogue => {
 
       hash[`KEY_${key}`].next!.push(choiceKey)
     }
-
+    
     key++
   }
-  console.log(raw)
+  
   console.log(hash)
   return hash
 }

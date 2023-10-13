@@ -10,28 +10,43 @@ interface useDialogueProps {
 export function useDialogue({ script, end }: useDialogueProps) {
   const [dialogue, setDialogue] = useState(script["KEY_1"])
   const [active, setActive] = useState<Character>()
+  const [npc, setNpc] = useState<Character>()
   const [textIndex, setTextIndex] = useState<number>(0)
-
+  
   useEffect(() => {
-    setActive(getActive(dialogue))
+    const currActive = getCharacterById(dialogue.speakerId || 0)
+    setActive(currActive)
+
+    if (currActive.id !== 0) {
+      setNpc(currActive)
+    }
   }, [])
 
   const next = (key?: number) => {
-    if (dialogue.next === null) {
+    const isLastText = (textIndex === dialogue.text.length - 1)
+
+    if (!isLastText) {
+      return setTextIndex(prev => prev + 1)
+    }
+    
+    if (dialogue.next === null && isLastText) {
       return end()
     }
 
     const nextLine = getDialogue(key)
+    const currActive = getCharacterById(nextLine.speakerId || 0)
+
+    if (nextLine.speakerId) {
+      setNpc(currActive)
+    }
+
     setDialogue(nextLine)
-    setActive(getActive(nextLine))
+    setActive(currActive)
+    resetTextIndex()
   }
 
   const getDialogue = (key?: number) => {
     return script[dialogue.next![key || 0]]
-  }
-
-  const getActive = (line: DialogueLine) => {
-    return getCharacterById(line.speakerId || 0)
   }
 
   const resetTextIndex = () => {
@@ -39,8 +54,15 @@ export function useDialogue({ script, end }: useDialogueProps) {
   }
 
   return {
-    dialogue,
+    dialogue: {
+      ...dialogue,
+      text: dialogue.text[textIndex],
+    },
     active,
+    participants: { 
+      controlled: getCharacterById(0), 
+      npc
+    },
     next
   }
 }

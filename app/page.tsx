@@ -22,6 +22,7 @@ export default function Home() {
       type: EVENT_TYPES.DIALOGUE,
       content: { script: dialogues[DIALOGUE_ID.INTRO] }
     }
+    
     actions.startEvent(demoEvent)
   }, [])
 
