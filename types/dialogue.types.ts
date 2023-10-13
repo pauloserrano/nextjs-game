@@ -10,7 +10,7 @@ export interface Dialogue {
 }
 
 export interface DialogueLine {
-  text: string
+  text: string | string[]
   type: TEXT_TYPE
   speakerId?: CHARACTERS_ID
   choices?: Omit<DialogueLine, "choices">[]
@@ -18,7 +18,7 @@ export interface DialogueLine {
 }
 
 export interface rawDialogue {
-  text: string,
+  text: string | string[],
   type?: TEXT_TYPE
   speakerId?: CHARACTERS_ID,
   choices?: Omit<rawDialogue, "choices">[]

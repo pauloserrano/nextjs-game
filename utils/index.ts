@@ -1,9 +1,13 @@
 import { CHARACTERS_ID, characters } from "@/data"
-import { Dialogue, TEXT_TYPE, rawDialogue } from "@/types"
+import { Character, Dialogue, TEXT_TYPE, rawDialogue } from "@/types"
 
 
 export const getNameById = (id: CHARACTERS_ID): string => {
   return characters[id].name
+}
+
+export const getCharacterById = (id: CHARACTERS_ID): Character => {
+  return characters[id]
 }
 
 export const formatDialogue = (raw: rawDialogue[]): Dialogue => {

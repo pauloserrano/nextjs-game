@@ -14,25 +14,25 @@ interface DialogueLayoutProps {
 }
 
 export function DialogueLayout({ event, resolve }: DialogueLayoutProps) {
-  const { dialogue, speakers, next } = useDialogue({ 
+  const { dialogue, active, next } = useDialogue({ 
     script: event.content.script, 
     end: resolve 
   })
   
   return (
     <Layout className={styles.container}>
-      <div className={`${styles["player-side"]} ${styles.active}`}>
+      <div className={`${styles["player-side"]} ${!active?.id && styles.active}`}>
         <Image 
           className={styles.portrait}
           src={characters[CHARACTERS_ID.ARION].src}
           alt={characters[CHARACTERS_ID.ARION].name}
           width={768}
-          height={1144} 
+          height={1144}
         />
       </div>
 
       {(dialogue.speakerId) && (
-        <div className={styles["npc-side"]}>
+        <div className={`${styles["npc-side"]} ${active?.id && styles.active}`}>
         <Image 
             className={styles.portrait}
             src={characters[dialogue.speakerId].src}
@@ -45,7 +45,8 @@ export function DialogueLayout({ event, resolve }: DialogueLayoutProps) {
 
 
       <section className={styles["dialogue-container"]}>
-        <p className={`${styles.dialogue} ${styles[dialogue.type as string]}`}>
+        <h3 className={styles["dialogue-name"]}>{active?.name}</h3>
+        <p className={`${styles.dialogue} ${styles[dialogue.type]}`}>
           {dialogue.text}
         </p>
 
@@ -54,7 +55,7 @@ export function DialogueLayout({ event, resolve }: DialogueLayoutProps) {
             <hr />
             <ol className={styles["dialogue-choices"]}>
               {dialogue.choices?.map((choice, id) => (
-                <li key={id} onClick={() => next(id)}>{choice.text}</li>
+                <li key={id} onClick={() => next(id)} className={`${styles[dialogue.type]}`}>{choice.text}</li>
               ))}
             </ol>
           </>)
