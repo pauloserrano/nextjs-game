@@ -1,10 +1,10 @@
 "use client"
 
 import { useEffect } from "react";
+import { CHARACTERS_ID, CombatEvent, DAYTIMES, DialogueEvent, EVENT_TYPES, MAPS_ID } from "@/types";
 import { useFactory, useGameContext } from "@/hooks";
 import { CombatLayout, DialogueLayout, OverworldLayout } from "@/layouts";
-import { CHARACTERS_ID, DIALOGUE_ID, MAPS_ID, characters, dialogues, maps } from "@/data";
-import { CombatEvent, DAYTIMES, DialogueEvent, EVENT_TYPES } from "@/types";
+import { characters, maps } from "@/data";
 
 
 export default function Home() {
@@ -12,33 +12,19 @@ export default function Home() {
   const { create } = useFactory()
 
   useEffect(() => {
-    actions.setMap(maps[MAPS_ID.DEMO])
-    actions.setParty([ create.characterSheet(characters[CHARACTERS_ID.ARION]) ])
     actions.setDaytime(DAYTIMES.MORNING)
-
-    const demoEvent: DialogueEvent = {
-      contentId: 0,
-      name: "lorem ipsum",
-      type: EVENT_TYPES.DIALOGUE,
-      content: { script: dialogues[DIALOGUE_ID.INTRO] }
-    }
-    
-    actions.startEvent(demoEvent)
+    actions.setMap(maps[MAPS_ID.DEMO])
+    actions.setParty([ 
+      create.characterSheet(characters[CHARACTERS_ID.ARION]),
+      create.characterSheet(characters[CHARACTERS_ID.ELOISE]),
+    ])
   }, [])
 
-  const currentEvent = state.events.current
-
-  if (currentEvent === null) {
-    return (
-      <OverworldLayout />
-    )
-  }
-
-  switch(currentEvent.type){
+  switch(state.events.current?.type){
     case(EVENT_TYPES.DIALOGUE):
       return (
         <DialogueLayout 
-          event={currentEvent as DialogueEvent} 
+          event={state.events.current as DialogueEvent} 
           resolve={actions.endEvent} 
         />
       )
@@ -46,12 +32,13 @@ export default function Home() {
     case(EVENT_TYPES.COMBAT):
       return (
         <CombatLayout 
-          event={currentEvent as CombatEvent} 
+          event={state.events.current as CombatEvent} 
           resolve={actions.endEvent} 
         />
       )
-      
-    default:
-      break
   }
+
+  return (
+    <OverworldLayout />
+  )
 }
