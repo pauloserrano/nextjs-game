@@ -2,10 +2,11 @@
 
 import Image from "next/image"
 import { Comfortaa, Volkhov } from "next/font/google"
-import { EVENT_TYPES } from "@/types"
+import { EVENT_TYPES, MapAction } from "@/types"
 import { Layout } from "@/layouts"
 import { useEvent, useGameContext } from "@/hooks"
-import { Star, Cog, SpeechBubble, Walk, CrossedSwords, Sun } from "@/icons"
+import { Star, Cog, SpeechBubble, Walk, CrossedSwords, Sun, StabbedNote, FleurDeLys } from "@/icons"
+import { useCustomEvent } from "@/app/hooks/useCustomEvent"
 import styles from "./OverworldLayout.module.scss"
 
 const comfortaa = Comfortaa({ subsets: ['latin'] })
@@ -13,8 +14,30 @@ const volkhov = Volkhov({ subsets: ["latin"], weight: ["400", "700"]})
 
 
 export function OverworldLayout() {
-  const { state: { currentMap, daytime, characters }} = useGameContext()
+  const { state: { currentMap, daytime, characters, quests }} = useGameContext()
   const eventHandler = useEvent()
+  const { publish } = useCustomEvent()
+
+
+  function getMapActions(): MapAction[] {
+    const actions: MapAction[] = []
+
+    if (quests.length > 0){
+      quests.map(quest => {
+        quest.actions?.map((action) => {
+          if (action.map === currentMap && !quest.isCompleted) {
+            actions.push({...action })
+          }
+        })
+      })
+    }
+    
+    if (currentMap){
+      currentMap.actions.map(action => actions.push(action))
+    }
+    
+    return actions
+  }
 
   return (
     <Layout className={`${styles.container} ${comfortaa.className}`}>
@@ -22,13 +45,13 @@ export function OverworldLayout() {
         <div className={styles["daytime-container"]}>
           <Sun className={styles["daytime-icon"]} />
         </div>
-        <h3>{currentMap?.name || "lorem"}</h3>
+        <h3>{currentMap?.name || ""}</h3>
         <hr />
-        <p>{daytime || "ipsum"}</p>
+        <p onClick={() => publish("test")}>{daytime || ""}</p>
       </div>
 
       <ul className={styles["actions-container"]}>
-        {currentMap?.actions.map((action, id) => (
+        {getMapActions().map((action, id) => (
           <OverworldLayout.ActionButton 
             key={id} 
             type={action.event.type} 
@@ -39,13 +62,13 @@ export function OverworldLayout() {
       </ul>
 
       <nav className={styles["nav-container"]}>
-        <button>
-          <Cog className={styles["nav-icon"]} />
+        <button title={"Test"} onClick={() => {}}>
+          <Star className={styles["nav-icon"]} />
         </button>
-        <button>
-          <Cog className={styles["nav-icon"]} />
+        <button title={"Quests"} onClick={() => console.log(quests)}>
+          <StabbedNote className={styles["nav-icon"]} />
         </button>
-        <button>
+        <button title={"Settings"}>
           <Cog className={styles["nav-icon"]} />
         </button>
       </nav>
@@ -53,7 +76,7 @@ export function OverworldLayout() {
       <ul className={styles["party-container"]}>
         {characters.active?.map(character => (
           <li key={character.id}>
-            <SpeechBubble className={styles["chat-icon"]} />
+            {character.id !== 0 && <SpeechBubble className={styles["chat-icon"]} />}
             <Image 
               fill
               sizes="(max-width: 2000px) 300px"
@@ -83,6 +106,7 @@ OverworldLayout.ActionButton = function ActionButton({ type, name, ...props }: A
         {type === EVENT_TYPES.DIALOGUE && <SpeechBubble />}
         {type === EVENT_TYPES.TRAVEL && <Walk />}
         {type === EVENT_TYPES.COMBAT && <CrossedSwords />}
+        {type === EVENT_TYPES.QUEST && <FleurDeLys />}
       </div>
       <p>
         {name}

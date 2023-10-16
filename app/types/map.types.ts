@@ -11,12 +11,14 @@ export const enum DAYTIMES {
   NIGHT = "Night",
 }
 
+export interface MapAction {
+  label: string,
+  event: Event
+}
+
 export interface Map {
   id: MAPS_ID
   name: string
   src: string
-  actions: {
-    label: string,
-    event: Event
-  }[]
+  actions: MapAction[]
 }

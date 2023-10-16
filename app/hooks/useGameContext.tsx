@@ -2,7 +2,7 @@
 
 import { useContext } from 'react'
 import { GameContext, GAME_REDUCER_ACTIONS } from '@/contexts'
-import { CharacterSheet, DAYTIMES, Event, Map } from '@/types'
+import { CharacterSheet, DAYTIMES, Event, Map, Quest } from '@/types'
 
 export function useGameContext() {
   const { state, dispatch }  = useContext(GameContext)
@@ -31,6 +31,14 @@ export function useGameContext() {
     dispatch({ type: GAME_REDUCER_ACTIONS.SET_DAYTIME, payload: daytime })
   }
 
+  const addQuest = (quest: Quest) => {
+    const knownQuests = state.quests.find(known => known === quest)
+    
+    if (!knownQuests) {
+      dispatch({ type: GAME_REDUCER_ACTIONS.ADD_QUEST, payload: quest })
+    }
+  }
+
   return { 
     state, 
     actions: {
@@ -39,7 +47,8 @@ export function useGameContext() {
       endEvent,
       addToParty,
       setParty,
-      setDaytime
+      setDaytime,
+      addQuest
     }
   }
 }

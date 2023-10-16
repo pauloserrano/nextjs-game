@@ -1,10 +1,11 @@
-import { Dialogue, CharacterSheet, Map, MAPS_ID, DIALOGUE_ID } from "@/types"
+import { CharacterSheet, MAPS_ID, DIALOGUE_ID, QUESTS_ID } from "@/types"
 
 export const enum EVENT_TYPES {
   DIALOGUE = "dialogue",
   COMBAT = "combat",
   INTERACT = "interact",
-  TRAVEL = "travel"
+  TRAVEL = "travel",
+  QUEST = "quest"
 }
 
 export interface Event {
@@ -30,5 +31,11 @@ export interface CombatEvent extends Event{
   data: {
     playerParty: CharacterSheet[]
     enemyParty: CharacterSheet[]
+  }
+}
+
+export interface QuestEvent extends Event{
+  data: {
+    questId: QUESTS_ID
   }
 }

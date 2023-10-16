@@ -5,11 +5,18 @@ import { CHARACTERS_ID, CombatEvent, DAYTIMES, DialogueEvent, EVENT_TYPES, MAPS_
 import { useFactory, useGameContext } from "@/hooks";
 import { CombatLayout, DialogueLayout, OverworldLayout } from "@/layouts";
 import { characters, maps } from "@/data";
+import { useCustomEvent } from "./hooks/useCustomEvent";
 
 
 export default function Home() {
   const { state, actions } = useGameContext()
+  const { subscribe, unsubscribe } = useCustomEvent()
   const { create } = useFactory()
+
+  useEffect(() => {
+    subscribe("test", () => console.log("testing"))
+    return unsubscribe("test", () => console.log("testing"))
+  }, [])
 
   useEffect(() => {
     actions.setDaytime(DAYTIMES.MORNING)

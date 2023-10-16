@@ -1,4 +1,5 @@
 import { CHARACTERS_ID } from "./character.types"
+import { Event } from "./event.types"
 
 export const enum DIALOGUE_ID {
   INTRO
@@ -23,6 +24,7 @@ export interface DialogueLine {
   speakerId?: CHARACTERS_ID
   choices?: DialogueChoice[]
   next: string[] | null
+  event?: Event
 }
 
 interface RawDialogueChoice extends Omit<RawDialogue, "choices"> {
@@ -34,4 +36,5 @@ export interface RawDialogue {
   type?: TEXT_TYPE
   speakerId?: CHARACTERS_ID,
   choices?: RawDialogueChoice[]
+  event?: Event
 }

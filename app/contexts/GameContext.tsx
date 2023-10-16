@@ -10,6 +10,7 @@ export const enum GAME_REDUCER_ACTIONS {
   ADD_TO_PARTY,
   SET_PARTY,
   SET_DAYTIME,
+  ADD_QUEST,
 }
 
 export interface GameAction {
@@ -69,6 +70,12 @@ export const GameReducer = (state: GameState, action: GameAction): GameState => 
         ...state,
         daytime: newDaytime
       }
+    
+    case(GAME_REDUCER_ACTIONS.ADD_QUEST):
+      return {
+        ...state,
+        quests: [...state.quests, action.payload]
+      }
 
     default:
       return state
@@ -79,6 +86,7 @@ export const GameReducer = (state: GameState, action: GameAction): GameState => 
 const initialState: GameState = {
   characters: { active: [], idle: [] },
   events: { current: null, queued: [] },
+  quests: []
 }
 
 interface GameContextState {

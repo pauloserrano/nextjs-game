@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Dialogue, Character, CHARACTERS_ID, DIALOGUE_ID } from "@/types";
+import { Character, CHARACTERS_ID, DIALOGUE_ID } from "@/types";
 import { characters, dialogues } from "@/data";
 
 interface useDialogueProps {
@@ -13,11 +13,12 @@ export function useDialogue({ dialogueId, end }: useDialogueProps) {
   const [npc, setNpc] = useState<Character>()
   const [textIndex, setTextIndex] = useState<number>(0)
   
+  
   useEffect(() => {
     const currActive = getCharacterById(dialogue.speakerId || 0)
     setActive(currActive)
 
-    if (currActive.id !== 0) {
+    if (currActive.id !== CHARACTERS_ID.ARION) {
       setNpc(currActive)
     }
   }, [])

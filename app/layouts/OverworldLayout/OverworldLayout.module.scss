@@ -69,15 +69,21 @@
 }
 
 .actions-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
   position: absolute;
   inset: auto auto 2rem 2rem;
 
   li {
     display: flex;
     align-items: center;
-    cursor: pointer;
     height: 2.5rem;
+    cursor: pointer;
 
+    * {
+      transition: .1s ease-out transform;
+    }
 
     p {
       @include stroke(#000, 1px);
@@ -93,30 +99,30 @@
       background: linear-gradient(to right, #000, rgba(0, 0, 0, 0.2));
     }
 
-    &:not(:last-of-type) {
-      margin-bottom: 1rem;
-    }
-
-    &:hover, &:focus {
-      filter: brightness(0.8);
-    }
-  }
-
-  .icon-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    height: 100%;
-    aspect-ratio: 1 / 1;
-    border: 1px solid #E8CC70;
-    padding: 0.25rem;
-    background-color: black;
-
-    svg {
-      fill: #E8CC70;
-      width: 100%;
+    .icon-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
       height: 100%;
+      aspect-ratio: 1 / 1;
+      border: 1px solid #E8CC70;
+      padding: 0.25rem;
+      background-color: black;
+
+      svg {
+        fill: #E8CC70;
+        width: 100%;
+        height: 100%;
+      }
+    }
+    
+    &:hover, &:focus {      
+      filter: brightness(1.25);
+
+      *:not(svg, path) {
+        transform: translateX(1rem);
+      }
     }
   }
 }
@@ -165,13 +171,13 @@
 
     svg.chat-icon {
       position: absolute;
-      width: 3rem;
-      height: 3rem;
+      width: 2.5rem;
+      height: 2.5rem;
       stroke: #433F22;
       fill: #C9C5A0;
       top: 50%;
-      left: -40%;
-      transform: translateY(-50%);
+      left: 0;
+      transform: translate(-125%, -50%);
       cursor: pointer;
 
       &:hover, &:focus {

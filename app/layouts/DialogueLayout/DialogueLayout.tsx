@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import { Layout } from "@/layouts"
-import { useDialogue } from "@/hooks"
+import { useDialogue, useEvent, useGameContext } from "@/hooks"
 import { DialogueEvent } from "@/types"
 import styles from "./DialogueLayout.module.scss"
 
@@ -13,12 +13,21 @@ interface DialogueLayoutProps {
 }
 
 export function DialogueLayout({ event, resolve }: DialogueLayoutProps) {
+  const eventHandler = useEvent()
   const { dialogue, active, participants, next } = useDialogue({ 
     dialogueId: event.data.dialogueId, 
     end: resolve 
   })
 
-  const isActive = (id: number) => {
+  function handleDialogue(id?: number) {
+    if (dialogue.event){
+      eventHandler(dialogue.event)
+    }
+    
+    next(id)
+  }
+
+  function isActive(id: number) {
     return (active?.id === id)
   }
   
@@ -57,11 +66,11 @@ export function DialogueLayout({ event, resolve }: DialogueLayoutProps) {
             <hr />
             <ol className={styles["dialogue-choices"]}>
               {dialogue.choices?.map((choice, id) => (
-                <li key={id} onClick={() => next(id)} className={`${styles[choice.type]}`}>{choice.preview || choice.text}</li>
+                <li key={id} onClick={() => handleDialogue(id)} className={`${styles[choice.type]}`}>{choice.preview || choice.text}</li>
               ))}
             </ol>
           </>)
-         : (<button className={styles["next-btn"]} onClick={() => next()} />)}
+         : (<button className={styles["next-btn"]} onClick={() => handleDialogue()} />)}
 
       </section>
     </Layout>

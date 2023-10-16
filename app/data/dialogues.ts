@@ -1,5 +1,6 @@
-import { TEXT_TYPE, CHARACTERS_ID, DIALOGUE_ID, RawDialogue, Dialogue } from "@/types";
+import { TEXT_TYPE, CHARACTERS_ID, DIALOGUE_ID, RawDialogue, Dialogue, QUESTS_ID } from "@/types";
 import { characters } from "@/data";
+import { createEvent } from "../helpers";
 
 function getName(id: CHARACTERS_ID): string {
   return characters[id].name
@@ -49,23 +50,29 @@ function formatDialogue(raw: RawDialogue[]): Dialogue {
 }
 
 const intro: RawDialogue[] = [
-  { text: [
-      `${getName(CHARACTERS_ID.ARION)}, wake up...`,
-      `This is iterating through an array of strings`,
-    ], 
-    speakerId: CHARACTERS_ID.AYLA
+  { 
+    text: [`${getName(CHARACTERS_ID.ARION)}, wake up...`, `You're gonna be late!`], 
+    speakerId: CHARACTERS_ID.ELOISE,
+    event: createEvent.quest(QUESTS_ID.DEMO_001)
   },
-  { text: [`This is a new array of strings, also a thought text`], type: TEXT_TYPE.THOUGHT },
-  {
-    text: ["That was fast, you're getting good at this"],
+  { text: ["...", "Just five more minutes..."] },
+  { 
+    text: [`WAKE... UP!!!`],
+    speakerId: CHARACTERS_ID.ELOISE
+  },
+  { text: ["Ouch! My ears! What is the big fuss about?"] },
+  { 
+    text: [`It's your first day at work dummy! Have you forgotten? You're gonna run late!`],
     speakerId: CHARACTERS_ID.ELOISE,
     choices: [
-      { text: ["Well... they're not that strong, really..."], preview: "This is a useless preview text for this choice!" },
-      { text: ["Thanks! I've been doing this for a while by now"] },
-      { text: ["I know, right? I'll take your job soon old man!"] },
+      { text: ["Oh shit! Have I overslept?"] },
+      { text: ["Sure but did you really need to shout me awake?"] },
     ],
   },
-  { text: ["Their numbers really increased recently, huh? Well, at least you lot get to practice more."] },
+  { 
+    text: ["Hurry up! You have 10 minutes to get there!"], 
+    speakerId: CHARACTERS_ID.ELOISE
+  },
 ]
 
 
