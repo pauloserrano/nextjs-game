@@ -5,6 +5,7 @@ import { Layout } from "@/layouts"
 import { useDialogue, useEvent } from "@/hooks"
 import { DialogueEvent } from "@/types"
 import styles from "./DialogueLayout.module.scss"
+import { useEffect, useState } from "react"
 
 
 interface DialogueLayoutProps {
@@ -14,10 +15,30 @@ interface DialogueLayoutProps {
 
 export function DialogueLayout({ event, resolve }: DialogueLayoutProps) {
   const eventHandler = useEvent()
+  const [text, setText] = useState<string>("")
   const { dialogue, active, participants, next } = useDialogue({ 
     dialogueId: event.data.dialogueId, 
-    end: resolve 
+    end: resolve
   })
+
+  useEffect(() => {
+    textTypingEffect(dialogue.text)
+
+    return () => {
+      setText("")
+    }
+  }, [dialogue.text])
+
+  function textTypingEffect(str: string, i: number = 0) {
+    if (i === str.length){
+      return
+    }
+
+    setTimeout(() => {
+      setText((curr) => curr += str[i])
+      textTypingEffect(str, i + 1)
+    }, 10)
+  }
 
   function handleDialogue(id?: number) {
     if (dialogue.event){
@@ -56,9 +77,9 @@ export function DialogueLayout({ event, resolve }: DialogueLayoutProps) {
       )}
 
       <section className={styles["dialogue-container"]}>
-        <h3 className={styles["dialogue-name"]}>{active?.name}</h3>
+        {active && <h3 className={styles["dialogue-name"]}>{active.name}</h3>}
         <p className={`${styles.dialogue} ${styles[dialogue.type]}`}>
-          {dialogue.text}
+          {text}
         </p>
 
         {dialogue.choices 

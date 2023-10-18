@@ -9,9 +9,9 @@ interface useDialogueProps {
 
 export function useDialogue({ dialogueId, end }: useDialogueProps) {
   const [dialogue, setDialogue] = useState(dialogues[dialogueId]["KEY_1"])
+  const [textIndex, setTextIndex] = useState<number>(0)
   const [active, setActive] = useState<Character>()
   const [npc, setNpc] = useState<Character>()
-  const [textIndex, setTextIndex] = useState<number>(0)
   
   
   useEffect(() => {
@@ -36,7 +36,7 @@ export function useDialogue({ dialogueId, end }: useDialogueProps) {
       return setTextIndex(prev => prev + 1)
     }
 
-    const nextLine = getDialogue(key)
+    const nextLine = getDialogueLine(key)
     const currActive = getCharacterById(nextLine.speakerId || 0)
 
     if (nextLine.speakerId) {
@@ -45,15 +45,11 @@ export function useDialogue({ dialogueId, end }: useDialogueProps) {
 
     setDialogue(nextLine)
     setActive(currActive)
-    resetTextIndex()
-  }
-
-  const getDialogue = (key?: number) => {
-    return dialogues[dialogueId][dialogue.next![key || 0]]
-  }
-
-  const resetTextIndex = () => {
     setTextIndex(0)
+  }
+
+  const getDialogueLine = (key?: number) => {
+    return dialogues[dialogueId][dialogue.next![key || 0]]
   }
 
   const getCharacterById = (id: CHARACTERS_ID): Character => {
