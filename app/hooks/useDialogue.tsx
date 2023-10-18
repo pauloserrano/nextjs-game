@@ -8,7 +8,7 @@ interface useDialogueProps {
 }
 
 export function useDialogue({ dialogueId, end }: useDialogueProps) {
-  const [dialogue, setDialogue] = useState(dialogues[dialogueId]["KEY_1"])
+  const [dialogue, setDialogue] = useState(dialogues[dialogueId]["KEY_0"])
   const [textIndex, setTextIndex] = useState<number>(0)
   const [active, setActive] = useState<Character>()
   const [npc, setNpc] = useState<Character>()

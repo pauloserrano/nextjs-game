@@ -1,11 +1,11 @@
 "use client"
 
 import Image from "next/image"
+import { useEffect, useState } from "react"
 import { Layout } from "@/layouts"
 import { useDialogue, useEvent } from "@/hooks"
 import { DialogueEvent } from "@/types"
 import styles from "./DialogueLayout.module.scss"
-import { useEffect, useState } from "react"
 
 
 interface DialogueLayoutProps {
@@ -22,27 +22,35 @@ export function DialogueLayout({ event, resolve }: DialogueLayoutProps) {
   })
 
   useEffect(() => {
-    textTypingEffect(dialogue.text)
-
-    return () => {
-      setText("")
-    }
+    setText("")
   }, [dialogue.text])
 
-  function textTypingEffect(str: string, i: number = 0) {
-    if (i === str.length){
-      return
+  useEffect(() => {
+    if (text.length < dialogue.text.length){
+      const timer = textTypingEffect()
+
+      return () => {
+        clearTimeout(timer)
+      }
     }
 
-    setTimeout(() => {
-      setText((curr) => curr += str[i])
-      textTypingEffect(str, i + 1)
-    }, 10)
+  }, [dialogue.text, text])
+
+  function textTypingEffect() {
+    return setTimeout(() => {
+      setText((curr) => curr + dialogue.text[text.length]);
+    }, 10);
   }
 
   function handleDialogue(id?: number) {
-    if (dialogue.event){
-      eventHandler(dialogue.event)
+    const hasEvent = dialogue.event
+    if(hasEvent) {
+      eventHandler(dialogue.event!)
+    }
+
+    const isTyping = text.length < dialogue.text.length
+    if (isTyping) {
+      return setText(dialogue.text)
     }
     
     next(id)
