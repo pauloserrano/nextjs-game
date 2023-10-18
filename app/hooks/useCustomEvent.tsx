@@ -1,28 +1,21 @@
-export const enum EVENT_NAMES {
-  TEST = "test"
-}
-
 export function useCustomEvent() {
-  // listen
-  function subscribe(eventName: string, listener: () => void) {
-    document.addEventListener(eventName, listener);
+  function listen(eventName: string, callback: (detail?: any) => void) {
+    document.addEventListener(eventName, callback);
   }
 
-  // remove
-  function unsubscribe(eventName: string, listener: () => void) {
-    document.removeEventListener(eventName, listener);
+  function remove(eventName: string, callback: (detail?: any) => void) {
+    document.removeEventListener(eventName, callback);
   }
 
-  // emit
-  function publish(eventName: string, data?: {}) {
+  function dispatch(eventName: string, data?: {}) {
     const event = new CustomEvent(eventName, { detail: data });
     
     document.dispatchEvent(event);
   }
 
   return {
-    subscribe,
-    unsubscribe,
-    publish,
+    listen,
+    remove,
+    dispatch,
   }
 }

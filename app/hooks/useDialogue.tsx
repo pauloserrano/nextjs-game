@@ -15,9 +15,11 @@ export function useDialogue({ dialogueId, end }: useDialogueProps) {
   
   
   useEffect(() => {
+    // SET ACTIVE PLAYER SIDE
     const currActive = getCharacterById(dialogue.speakerId || 0)
     setActive(currActive)
 
+    // SET ACTIVE NPC SIDE
     if (currActive.id !== CHARACTERS_ID.ARION) {
       setNpc(currActive)
     }
@@ -25,13 +27,13 @@ export function useDialogue({ dialogueId, end }: useDialogueProps) {
 
   const next = (key?: number) => {
     const isLastText = (textIndex === dialogue.text.length - 1)
-
-    if (!isLastText) {
-      return setTextIndex(prev => prev + 1)
-    }
     
     if (dialogue.next === null && isLastText) {
       return end()
+    }
+
+    if (!isLastText) {
+      return setTextIndex(prev => prev + 1)
     }
 
     const nextLine = getDialogue(key)

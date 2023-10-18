@@ -1,10 +1,16 @@
 import styles from "./Modal.module.scss"
 
-export function Modal() {
+interface ModalProps {
+  title: string
+  description: string
+  isOpen: boolean
+}
+
+export function Modal({ title, description, isOpen }: ModalProps) {
   return (
-    <section className={styles.container}>
-      <h1>Modal Title</h1>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellat aliquam ullam quasi nesciunt officia soluta temporibus voluptate provident consectetur accusamus distinctio iusto ipsam ipsa non perspiciatis, molestias sunt veniam! Repellendus?</p>
+    <section className={`${styles.container}`} style={{ display: !isOpen ? "none" : "flex" }}>
+      <h1>{title}</h1>
+      <p>{description}</p>
     </section>
   )
 }

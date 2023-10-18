@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import { Layout } from "@/layouts"
-import { useDialogue, useEvent, useGameContext } from "@/hooks"
+import { useDialogue, useEvent } from "@/hooks"
 import { DialogueEvent } from "@/types"
 import styles from "./DialogueLayout.module.scss"
 
@@ -66,7 +66,7 @@ export function DialogueLayout({ event, resolve }: DialogueLayoutProps) {
             <hr />
             <ol className={styles["dialogue-choices"]}>
               {dialogue.choices?.map((choice, id) => (
-                <li key={id} onClick={() => handleDialogue(id)} className={`${styles[choice.type]}`}>{choice.preview || choice.text}</li>
+                <li key={id} onClick={() => handleDialogue(id)} className={`${styles[choice.type]}`}>{choice.preview}</li>
               ))}
             </ol>
           </>)

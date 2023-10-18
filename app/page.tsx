@@ -1,22 +1,15 @@
 "use client"
 
 import { useEffect } from "react";
-import { CHARACTERS_ID, CombatEvent, DAYTIMES, DialogueEvent, EVENT_TYPES, MAPS_ID } from "@/types";
+import { CHARACTERS_ID, CombatEvent, DAYTIMES, DialogueEvent, EVENT_TYPES, MAPS_ID, TEXT_TYPE } from "@/types";
 import { useFactory, useGameContext } from "@/hooks";
 import { CombatLayout, DialogueLayout, OverworldLayout } from "@/layouts";
 import { characters, maps } from "@/data";
-import { useCustomEvent } from "./hooks/useCustomEvent";
 
 
 export default function Home() {
   const { state, actions } = useGameContext()
-  const { subscribe, unsubscribe } = useCustomEvent()
   const { create } = useFactory()
-
-  useEffect(() => {
-    subscribe("test", () => console.log("testing"))
-    return unsubscribe("test", () => console.log("testing"))
-  }, [])
 
   useEffect(() => {
     actions.setDaytime(DAYTIMES.MORNING)
