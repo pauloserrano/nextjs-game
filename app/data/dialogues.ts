@@ -1,5 +1,5 @@
-import { CHARACTERS_ID, DIALOGUE_ID, RawDialogue } from "@/types";
-import { characters } from "@/data";
+import { CHARACTERS_ID, DIALOGUE_ID, MAPS_ID, QUESTS_ID, RawDialogue, TEXT_TYPE } from "@/types";
+import { characters, environments } from "@/data";
 import { createEvent, rawDialogueFormatter } from "../helpers";
 
 function getName(id: CHARACTERS_ID): string {
@@ -9,7 +9,8 @@ function getName(id: CHARACTERS_ID): string {
 const intro: RawDialogue[] = [
   { 
     text: [`${getName(CHARACTERS_ID.ARION)}, wake up...`, `You're gonna be late!`], 
-    speakerId: CHARACTERS_ID.ELOISE
+    speakerId: CHARACTERS_ID.ELOISE,
+    background: environments[MAPS_ID.LIVING_ROOM]
   },
   { text: ["...", "Just five more minutes..."] },
   { 
@@ -23,11 +24,11 @@ const intro: RawDialogue[] = [
     choices: [
       { 
         preview: "Oh shit! Have I overslept?",
-        branch: [{ text: ["Thanks for waking me up, I would be in big trouble"]}]
+        branch: [{ text: ["Thanks for waking me up, I would be in big trouble"] }]
       },
       { 
         preview: "You so loud...",
-        branch: [{ text: ["Did you really have to scream? That was so unnecessary"]}]
+        branch: [{ text: ["Did you really have to scream? That was so unnecessary"] }]
       },
     ],
   },

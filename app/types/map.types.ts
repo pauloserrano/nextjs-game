@@ -2,7 +2,11 @@ import { Event } from "@/types"
 
 export const enum MAPS_ID {
   DEMO,
-  OUTSIDE
+  OUTSIDE,
+  LIVING_ROOM,
+  BEDROOM,
+  KITCHEN,
+  CORRIDOR,
 }
 
 export const enum DAYTIMES {
@@ -11,14 +15,17 @@ export const enum DAYTIMES {
   NIGHT = "Night",
 }
 
+export interface Environment {
+  id: MAPS_ID
+  name: string
+  src: string
+}
+
 export interface MapAction {
   label: string,
   event: Event
 }
 
-export interface Map {
-  id: MAPS_ID
-  name: string
-  src: string
+export interface Map extends Environment{
   actions: MapAction[]
 }

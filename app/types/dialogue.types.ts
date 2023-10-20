@@ -1,5 +1,6 @@
 import { CHARACTERS_ID } from "./character.types"
 import { Event } from "./event.types"
+import { Environment, Map } from "./map.types"
 
 export const enum DIALOGUE_ID {
   INTRO
@@ -14,16 +15,12 @@ export interface Dialogue {
   [key: string] : DialogueLine
 }
 
-export interface DialogueLine {
-  text: string[]
+export interface DialogueLine extends Omit<RawDialogue, "type" | "choices"> {
   type: TEXT_TYPE
-  speakerId?: CHARACTERS_ID
-  event?: Event
   next: string[] | null
   choices?: {
     preview: string
     type: string
-    event?: Event
   }[]
 }
 
@@ -31,12 +28,12 @@ export interface RawDialogue {
   text: string[],
   type?: TEXT_TYPE
   speakerId?: CHARACTERS_ID,
+  speed?: number
   event?: Event
+  background?: Environment | Map
   choices?: {
     preview: string
-    type?: string
-    speakerId?: number
-    event?: Event
+    type?: TEXT_TYPE
     branch: RawDialogue[]
   }[]
 }

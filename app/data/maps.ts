@@ -1,4 +1,4 @@
-import { DIALOGUE_ID, EVENT_TYPES, MAPS_ID, Map } from "@/types";
+import { DIALOGUE_ID, EVENT_TYPES, Environment, MAPS_ID, Map } from "@/types";
 import { createEvent } from "../helpers";
 
 const Demo: Map = {
@@ -22,7 +22,38 @@ const Outside: Map = {
   ]
 }
 
+const LivingRoom: Environment = {
+  id: MAPS_ID.LIVING_ROOM,
+  name: "Living Room",
+  src: "/assets/images/environments/living-room.png"
+}
+
+const Bedroom: Environment = {
+  id: MAPS_ID.BEDROOM,
+  name: "Bedroom",
+  src: "/assets/images/environments/bedroom.png"
+}
+
+const Kitchen: Environment = {
+  id: MAPS_ID.KITCHEN,
+  name: "Kitchen",
+  src: "/assets/images/environments/kitchen.png"
+}
+
+const Corridor: Environment = {
+  id: MAPS_ID.CORRIDOR,
+  name: "Corridor",
+  src: "/assets/images/environments/corridor.png"
+}
+
 export const maps = {
   [Demo.id]: Demo,
-  [Outside.id]: Outside
+  [Outside.id]: Outside,
+}
+
+export const environments = {
+  [LivingRoom.id]: LivingRoom,
+  [Bedroom.id]: Bedroom,
+  [Kitchen.id]: Kitchen,
+  [Corridor.id]: Corridor
 }

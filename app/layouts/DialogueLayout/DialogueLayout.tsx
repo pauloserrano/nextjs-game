@@ -14,43 +14,44 @@ interface DialogueLayoutProps {
 }
 
 export function DialogueLayout({ event, resolve }: DialogueLayoutProps) {
-  const eventHandler = useEvent()
   const [text, setText] = useState<string>("")
-  const { dialogue, active, participants, next } = useDialogue({ 
+  const eventHandler = useEvent()
+  const { dialogue, active, participants, background, next } = useDialogue({ 
     dialogueId: event.data.dialogueId, 
     end: resolve
   })
-
+  
   useEffect(() => {
-    setText("")
-  }, [dialogue.text])
+    if (dialogue.event){
+      eventHandler(dialogue.event)
+    }
+  }, [dialogue.event])
+
+  useEffect(() => setText(""), [dialogue.text])
 
   useEffect(() => {
     if (text.length < dialogue.text.length){
       const timer = textTypingEffect()
 
-      return () => {
-        clearTimeout(timer)
-      }
+      return () => clearTimeout(timer)
     }
 
-  }, [dialogue.text, text])
+  }, [text])
+
 
   function textTypingEffect() {
     return setTimeout(() => {
       setText((curr) => curr + dialogue.text[text.length]);
-    }, 10);
+    }, dialogue.speed || 10);
   }
 
-  function handleDialogue(id?: number) {
-    const hasEvent = dialogue.event
-    if(hasEvent) {
-      eventHandler(dialogue.event!)
-    }
 
-    const isTyping = text.length < dialogue.text.length
-    if (isTyping) {
-      return setText(dialogue.text)
+  function handleDialogue(id?: number) {
+    const isTyping = (text.length < dialogue.text.length)
+    
+    if (isTyping){
+      setText(dialogue.text)
+      return
     }
     
     next(id)
@@ -61,7 +62,7 @@ export function DialogueLayout({ event, resolve }: DialogueLayoutProps) {
   }
   
   return (
-    <Layout className={styles.container}>
+    <Layout background={background} className={styles.container}>
       <div className={`${styles["player-side"]} ${isActive(participants.controlled?.id) && styles.active}`}>
         <Image 
           className={styles.portrait}
@@ -90,17 +91,19 @@ export function DialogueLayout({ event, resolve }: DialogueLayoutProps) {
           {text}
         </p>
 
-        {dialogue.choices 
-         ? (<>
+        {dialogue.choices && (text.length >= dialogue.text.length)
+         ? <>
             <hr />
             <ol className={styles["dialogue-choices"]}>
               {dialogue.choices?.map((choice, id) => (
-                <li key={id} onClick={() => handleDialogue(id)} className={`${styles[choice.type]}`}>{choice.preview}</li>
+                <li key={id} className={`${styles[choice.type]}`} onClick={() => handleDialogue(id)}>
+                  {choice.preview}
+                </li>
               ))}
             </ol>
-          </>)
-         : (<button className={styles["next-btn"]} onClick={() => handleDialogue()} />)}
-
+          </>
+         : <button className={styles["next-btn"]} onClick={() => handleDialogue()} />
+        }
       </section>
     </Layout>
   )

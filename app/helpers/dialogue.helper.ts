@@ -39,6 +39,6 @@ export function rawDialogueFormatter(data: RawDialogue[], options?: { dialogue?:
       dialogue[dialogueKey].next!.push(choiceKey + 0)
     }
   }
-
+  
   return dialogue
 }
