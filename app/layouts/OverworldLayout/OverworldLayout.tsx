@@ -2,20 +2,18 @@
 
 import Image from "next/image"
 import { Comfortaa, Volkhov } from "next/font/google"
-import { EVENT_TYPES, MapAction, QuestAction } from "@/types"
+import { EVENT_TYPES, MapAction } from "@/types"
 import { Layout } from "@/layouts"
 import { useEvent, useGameContext } from "@/hooks"
-import { Star, Cog, SpeechBubble, Walk, CrossedSwords, Sun, StabbedNote, FleurDeLys } from "@/icons"
+import { Star, Cog, SpeechBubble, Walk, CrossedSwords, Sun, Paper, Chart, Character, Backpack, LinkedRings } from "@/icons"
+import { NavButton } from "./NavButton"
 import styles from "./OverworldLayout.module.scss"
-import { useState } from "react"
-import { Modal } from "@/app/components/Modals/Modal"
 
 const comfortaa = Comfortaa({ subsets: ['latin'] })
 const volkhov = Volkhov({ subsets: ["latin"], weight: ["400", "700"]})
 
 
 export function OverworldLayout() {
-  const [isOpen, setIsOpen] = useState<boolean>(false)
   const { state: { currentMap, daytime, characters, quests }} = useGameContext()
   const eventHandler = useEvent()
 
@@ -46,7 +44,6 @@ export function OverworldLayout() {
 
   return (
     <Layout className={`${styles.container} ${comfortaa.className}`}>
-      <Modal title={quests[0]?.name} description={quests[0]?.description} isOpen={isOpen} />
       <div className={`${styles["info-container"]} ${volkhov.className}`}>
         <div className={styles["daytime-container"]}>
           <Sun className={styles["daytime-icon"]} />
@@ -68,15 +65,12 @@ export function OverworldLayout() {
       </ul>
 
       <nav className={styles["nav-container"]}>
-        <button title={"Test"} onClick={() => setIsOpen(prev => !prev)}>
-          <Star className={styles["nav-icon"]} />
-        </button>
-        <button title={"Quests"} onClick={() => console.log(quests)}>
-          <StabbedNote className={styles["nav-icon"]} />
-        </button>
-        <button title={"Settings"}>
-          <Cog className={styles["nav-icon"]} />
-        </button>
+        <NavButton title="Inventory" icon={Backpack} onClick={() => {}}/>
+        <NavButton title="Status" icon={Character} onClick={() => {}}/>
+        <NavButton title="Skill Tree" icon={Chart} onClick={() => {}} />
+        <NavButton title="Relationship" icon={LinkedRings} onClick={() => {}} />
+        <NavButton title="Journal" icon={Paper} onClick={() => console.log(quests)} />
+        <NavButton title="Settings" icon={Cog} onClick={() => {}} />
       </nav>
 
       <ul className={styles["party-container"]}>
@@ -112,7 +106,6 @@ OverworldLayout.ActionButton = function ActionButton({ type, name, ...props }: A
         {type === EVENT_TYPES.DIALOGUE && <SpeechBubble />}
         {type === EVENT_TYPES.TRAVEL && <Walk />}
         {type === EVENT_TYPES.COMBAT && <CrossedSwords />}
-        {type === EVENT_TYPES.QUEST && <FleurDeLys />}
       </div>
       <p>
         {name}

@@ -133,7 +133,7 @@
   position: absolute;
   inset: 1rem 1rem auto auto;
 
-  button {
+  .nav-button {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -171,13 +171,13 @@
 
     svg.chat-icon {
       position: absolute;
-      width: 2.5rem;
-      height: 2.5rem;
+      width: 2rem;
+      height: 2rem;
       stroke: #433F22;
       fill: #C9C5A0;
       top: 50%;
       left: 0;
-      transform: translate(-125%, -50%);
+      transform: translate(-140%, -50%);
       cursor: pointer;
 
       &:hover, &:focus {
