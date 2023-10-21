@@ -5,9 +5,10 @@ import { Comfortaa, Volkhov } from "next/font/google"
 import { EVENT_TYPES, MapAction } from "@/types"
 import { Layout } from "@/layouts"
 import { useEvent, useGameContext } from "@/hooks"
-import { Star, Cog, SpeechBubble, Walk, CrossedSwords, Sun, Paper, Chart, Character, Backpack, LinkedRings } from "@/icons"
-import { NavButton } from "./NavButton"
+import { Cog, SpeechBubble, Sun, Paper, Chart, Character, Backpack, LinkedRings } from "@/icons"
 import styles from "./OverworldLayout.module.scss"
+import { ButtonIcon } from "@/app/components/ButtonIcon/ButtonIcon"
+import { ActionButton } from "./ActionButton"
 
 const comfortaa = Comfortaa({ subsets: ['latin'] })
 const volkhov = Volkhov({ subsets: ["latin"], weight: ["400", "700"]})
@@ -55,7 +56,7 @@ export function OverworldLayout() {
 
       <ul className={styles["actions-container"]}>
         {getMapActions().map((action, id) => (
-          <OverworldLayout.ActionButton 
+          <ActionButton
             key={`${id}-${action.label}`} 
             type={action.event.type} 
             name={action.label}
@@ -65,12 +66,42 @@ export function OverworldLayout() {
       </ul>
 
       <nav className={styles["nav-container"]}>
-        <NavButton title="Inventory" icon={Backpack} onClick={() => {}}/>
-        <NavButton title="Status" icon={Character} onClick={() => {}}/>
-        <NavButton title="Skill Tree" icon={Chart} onClick={() => {}} />
-        <NavButton title="Relationship" icon={LinkedRings} onClick={() => {}} />
-        <NavButton title="Journal" icon={Paper} onClick={() => console.log(quests)} />
-        <NavButton title="Settings" icon={Cog} onClick={() => {}} />
+        <ButtonIcon 
+          className={styles["nav-button"]}
+          title="Inventory" 
+          icon={Backpack} 
+          onClick={() => {}}
+        />
+        <ButtonIcon 
+          className={styles["nav-button"]}
+          title="Status" 
+          icon={Character} 
+          onClick={() => {}}
+        />
+        <ButtonIcon 
+          className={styles["nav-button"]}
+          title="Skill Tree" 
+          icon={Chart} 
+          onClick={() => {}} 
+        />
+        <ButtonIcon 
+          className={styles["nav-button"]}
+          title="Relationship" 
+          icon={LinkedRings} 
+          onClick={() => {}} 
+        />
+        <ButtonIcon 
+          className={styles["nav-button"]}
+          title="Journal" 
+          icon={Paper} 
+          onClick={() => console.log(quests)} 
+        />
+        <ButtonIcon 
+          className={styles["nav-button"]}
+          title="Settings" 
+          icon={Cog} 
+          onClick={() => {}} 
+        />
       </nav>
 
       <ul className={styles["party-container"]}>
@@ -88,28 +119,5 @@ export function OverworldLayout() {
         ))}
       </ul>
     </Layout>
-  )
-}
-
-
-interface ActionButtonProps { 
-  type: string
-  name: string
-  [prop: string]: any
-}
-
-OverworldLayout.ActionButton = function ActionButton({ type, name, ...props }: ActionButtonProps) {
-  return (
-    <li {...props}>
-      <div className={styles["icon-container"]}>
-        {type === EVENT_TYPES.INTERACT && <Star />}
-        {type === EVENT_TYPES.DIALOGUE && <SpeechBubble />}
-        {type === EVENT_TYPES.TRAVEL && <Walk />}
-        {type === EVENT_TYPES.COMBAT && <CrossedSwords />}
-      </div>
-      <p>
-        {name}
-      </p>
-    </li>
   )
 }

@@ -5,6 +5,7 @@ import { CHARACTERS_ID, CombatEvent, DAYTIMES, DialogueEvent, EVENT_TYPES, MAPS_
 import { useFactory, useGameContext } from "@/hooks";
 import { CombatLayout, DialogueLayout, OverworldLayout } from "@/layouts";
 import { characters, maps } from "@/data";
+import { JournalLayout } from "./layouts/JournalLayout/JournalLayout";
 
 
 export default function Home() {
@@ -37,6 +38,8 @@ export default function Home() {
         />
       )
   }
+
+  return <JournalLayout />
 
   return (
     <OverworldLayout />
