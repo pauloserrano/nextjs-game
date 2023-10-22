@@ -1,10 +1,10 @@
 "use client"
 
 import { useEffect } from "react";
-import { CHARACTERS_ID, CombatEvent, DAYTIMES, DialogueEvent, EVENT_TYPES, MAPS_ID, TEXT_TYPE } from "@/types";
+import { CHARACTERS_ID, CombatEvent, DAYTIMES, DialogueEvent, EVENT_TYPES, MAPS_ID, QUESTS_ID, TEXT_TYPE } from "@/types";
 import { useFactory, useGameContext } from "@/hooks";
 import { CombatLayout, DialogueLayout, OverworldLayout } from "@/layouts";
-import { characters, maps } from "@/data";
+import { characters, maps, quests } from "@/data";
 import { JournalLayout } from "./layouts/JournalLayout/JournalLayout";
 
 
@@ -19,6 +19,8 @@ export default function Home() {
       create.characterSheet(characters[CHARACTERS_ID.ARION]),
       create.characterSheet(characters[CHARACTERS_ID.ELOISE]),
     ])
+    actions.addQuest(quests[QUESTS_ID.DEMO_001])
+    actions.addQuest(quests[QUESTS_ID.DEMO_002])
   }, [])
 
   switch(state.events.current?.type){
@@ -39,7 +41,7 @@ export default function Home() {
       )
   }
 
-  return <JournalLayout />
+  //return <JournalLayout />
 
   return (
     <OverworldLayout />

@@ -1,7 +1,9 @@
 .container {
+  display: flex;
+  flex-direction: column;
   height: 100%;
-  position: relative;
   padding: 2rem;
+  position: relative;
   
   * {
     position: relative;
@@ -32,7 +34,7 @@
 
 .content-container {
   display: grid;
-  grid-template-columns: auto 1fr 2fr;
+  grid-template-columns: auto 2fr 3fr;
   gap: 2rem;
   height: 100%;
 }
@@ -45,6 +47,7 @@
   .nav-btn {
     height: 3rem;
     width: 3rem;
+    padding: 0.5rem;
     border: 1px solid #E8CC70;
     position: relative;
     background-color: #212121;
@@ -101,13 +104,34 @@
     flex-direction: column;
     gap: 0.5rem;
     width: 100%;
+    flex: 1;
 
-    li {
+    .category-item {
       width: 100%;
       padding: 0.75rem 1rem;
       border-radius: 0.25rem;
-      background-color: #111;
+      background: linear-gradient(#C3E4CD, #5F7969, #39443C);
+      transition: .1s ease-in-out all;
       cursor: pointer;
+
+      &.selected {
+        transform: translateX(2rem);
+        background: linear-gradient(#FDFBC2, #AAA565, #7D7647);
+      }
+    }
+  }
+
+  .close-btn {
+    font-size: 1rem;
+    padding: 0.5rem 2rem;
+    border: transparent;
+    border-radius: 0.5rem;
+    color: #fff;
+    background-color: #746638;
+    cursor: pointer;
+
+    &:hover, &:focus {
+      filter: brightness(1.1)
     }
   }
 }
@@ -121,18 +145,26 @@
   height: 100%;
   padding: 2rem;
   background: 
-    radial-gradient(133.49% 140.12% at 0% 0%, rgba(211, 210, 190, 0.98) 0%, rgba(208, 199, 172, 0.98) 33.33%, rgba(218, 199, 142, 0.98) 66.67%, rgba(208, 197, 167, 0.98) 100%);
+    radial-gradient(
+      150% 150% at 0% 0%, 
+      #d3d2be 0%, 
+      #d0c7ac 30%, 
+      #dac78e 60%, 
+      #d0c5a7 100%);
 
-    h3, p {
-      color: #161616;
-    }
+  outline: 1px solid #79633C;
+  outline-offset: -1rem;
+  
+  h3, p {
+    color: #161616;
+  }
 
-    h3 {
-      font-size: 2rem;
-      font-weight: bold;
-    }
+  h3 {
+    font-size: 2rem;
+    font-weight: bold;
+  }
 
-    p {
-      font-size: 1rem
-    }
+  p {
+    font-size: 1rem
+  }
 }

@@ -1,12 +1,34 @@
+"use client"
+
 import { Comfortaa } from 'next/font/google'
+import { useState } from 'react'
 import { Layout } from '@/layouts'
-import { Paper, Star } from "@/app/data/icons"
+import { Exclamation, Paper, Star } from "@/app/data/icons"
+import { ButtonIcon } from '@/components'
+import { useGameContext } from '@/hooks'
 import styles from "./JournalLayout.module.scss"
-import { ButtonIcon } from '@/app/components/ButtonIcon/ButtonIcon'
+import Link from 'next/link'
 
 const comfortaa = Comfortaa({ subsets: ["latin"] })
 
+const enum CATEGORIES {
+  QUESTS = "Quests",
+  CODEX = "Codex",
+  TUTORIALS = "Tutorials",
+}
+
 export function JournalLayout() {
+  const { state } = useGameContext()
+  const [category, setCategory] = useState<CATEGORIES>(CATEGORIES.QUESTS)
+  const [selectedItem, setSelectedItem] = useState<any>()
+
+  function changeCategory(newCategory: CATEGORIES) {
+    if (newCategory === category) return
+
+    setCategory(() => newCategory)
+    setSelectedItem(() => {})
+  }
+
   return (
     <Layout className={`${styles.container} ${comfortaa.className}`}>
       <header className={styles.header}>
@@ -15,30 +37,61 @@ export function JournalLayout() {
       </header>
       <div className={styles["content-container"]}>
         <nav className={styles.nav}>
-          <ButtonIcon className={`${styles["nav-btn"]} ${styles.selected}`} icon={Star} />
-          <ButtonIcon className={styles["nav-btn"]} icon={Star} />
-          <ButtonIcon className={styles["nav-btn"]} icon={Star} />
+          <ButtonIcon 
+            className={`
+              ${styles["nav-btn"]} 
+              ${category === CATEGORIES.QUESTS && styles.selected}
+            `} 
+            title="Quests"
+            icon={Exclamation}
+            onClick={() => changeCategory(CATEGORIES.QUESTS)}
+          />
+          <ButtonIcon 
+            className={`
+              ${styles["nav-btn"]} 
+              ${category === CATEGORIES.CODEX && styles.selected}
+            `} 
+            title="Codex"
+            icon={Star} 
+            onClick={() => changeCategory(CATEGORIES.CODEX)}
+          />
+          <ButtonIcon 
+            className={`
+              ${styles["nav-btn"]} 
+              ${category === CATEGORIES.TUTORIALS && styles.selected}
+            `} 
+            title="Tutorials"
+            icon={Star} 
+            onClick={() => changeCategory(CATEGORIES.TUTORIALS)}
+          />
         </nav>
         <section className={styles["category-container"]}>
-          <h3>Quests</h3>
+          <h3>{category}</h3>
           <ul>
-            <li>Prologue</li>
-            <li>Chapter 1</li>
+            {category === CATEGORIES.QUESTS && (
+              state.quests.map((quest) => (
+                <li 
+                  key={quest.id} 
+                  className={`
+                    ${styles["category-item"]} 
+                    ${selectedItem === quest && styles.selected}
+                  `}
+                  onClick={() => setSelectedItem(quest)}
+                >
+                  {quest.name}
+                </li>
+              ))
+            )}
           </ul>
+          <Link className={styles["close-btn"]} href="/">Close</Link>
         </section>
-        <article className={styles["info-container"]}>
-          <h3>Lorem Ipsum</h3>
-          <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quae fugiat aliquam praesentium officiis omnis odit magni rerum sed voluptatum eligendi?</p>
-        </article>
+        {selectedItem && (
+          <article className={styles["info-container"]}>
+            <h3>{selectedItem.name}</h3>
+            <p>{selectedItem.description}</p>
+          </article>
+        )}
       </div>
     </Layout>
-  )
-}
-
-function NavButton({ icon: Icon }: { icon: React.FC<React.SVGProps<SVGElement>> }) {
-  return (
-    <button className={styles["nav-btn"]}>
-    <Star className={styles["nav-icon"]} />
-  </button>
   )
 }

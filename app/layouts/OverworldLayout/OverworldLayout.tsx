@@ -2,42 +2,27 @@
 
 import Image from "next/image"
 import { Comfortaa, Volkhov } from "next/font/google"
+import { useRouter } from "next/navigation"
 import { EVENT_TYPES, MapAction } from "@/types"
 import { Layout } from "@/layouts"
 import { useEvent, useGameContext } from "@/hooks"
 import { Cog, SpeechBubble, Sun, Paper, Chart, Character, Backpack, LinkedRings } from "@/icons"
-import styles from "./OverworldLayout.module.scss"
-import { ButtonIcon } from "@/app/components/ButtonIcon/ButtonIcon"
+import { ButtonIcon } from "@/components"
 import { ActionButton } from "./ActionButton"
+import styles from "./OverworldLayout.module.scss"
 
 const comfortaa = Comfortaa({ subsets: ['latin'] })
 const volkhov = Volkhov({ subsets: ["latin"], weight: ["400", "700"]})
 
 
 export function OverworldLayout() {
-  const { state: { currentMap, daytime, characters, quests }} = useGameContext()
+  const { state: { currentMap, daytime, characters }} = useGameContext()
   const eventHandler = useEvent()
+  const router = useRouter()
 
   function getMapActions(): MapAction[] {
     const actions: MapAction[] = []
 
-    if (quests.length > 0){
-      const mapRelatedQuests = quests
-        .map(quest => quest.steps?.find(step => !step.isCompleted))
-        .filter(step => step?.actions?.find(action => action.location === currentMap))
-        
-      console.log(mapRelatedQuests)
-
-      // quests.map(quest => {
-      //   quest.steps?actions?.map((action) => {
-      //     const questAction = action as QuestAction
-      //     if (questAction.map === currentMap && !quest.isCompleted) {
-      //       actions.push({...action})
-      //     }
-      //   })
-      // })
-    }
-    
     currentMap?.actions.forEach(action => actions.push(action))
     
     return actions
@@ -94,7 +79,7 @@ export function OverworldLayout() {
           className={styles["nav-button"]}
           title="Journal" 
           icon={Paper} 
-          onClick={() => console.log(quests)} 
+          onClick={() => router.push("/journal")} 
         />
         <ButtonIcon 
           className={styles["nav-button"]}
