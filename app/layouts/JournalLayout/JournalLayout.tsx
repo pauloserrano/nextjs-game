@@ -69,7 +69,7 @@ export function JournalLayout() {
           <h3>{category}</h3>
           <ul>
             {category === CATEGORIES.QUESTS && (
-              state.quests.map((quest) => (
+              state.quests.ongoing.map((quest) => (
                 <li 
                   key={quest.id} 
                   className={`

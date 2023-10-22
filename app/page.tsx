@@ -19,9 +19,7 @@ export default function Home() {
       create.characterSheet(characters[CHARACTERS_ID.ARION]),
       create.characterSheet(characters[CHARACTERS_ID.ELOISE]),
     ])
-
     actions.addQuest(quests[QUESTS_ID.DEMO_001])
-    actions.addQuest(quests[QUESTS_ID.DEMO_002])
   }, [])
 
   useEffect(() => {
@@ -52,11 +50,40 @@ export default function Home() {
     }
   }, [])
 
-  switch(state.events.current?.type){
+  useEffect(() => {
+    if (!state.quests.ongoing) return
+
+    const triggers: any = []
+
+    for(let i = 0; i < state.quests.ongoing.length; i++) {
+      const quest = state.quests.ongoing[i]
+      const currentStep = quest.steps.find((step) => !step.completed)
+
+      const callback = (e: any) => {
+        if (!currentStep?.trigger.condition(e.detail)) return
+
+        currentStep.trigger.callback()
+      }
+
+      if (currentStep !== undefined){
+        listen(currentStep.trigger.type, callback)
+        triggers.push({ type: currentStep.trigger.type, callback: callback })
+      }
+    }
+         
+    return () => {
+      triggers.forEach((listener: any) => {
+        remove(listener.type, listener.callback)
+      })
+    }
+  }, [state.quests.ongoing])
+
+  
+  switch(state.event?.type){
     case(EVENT_TYPES.DIALOGUE):
       return (
         <DialogueLayout 
-          event={state.events.current as DialogueEvent} 
+          event={state.event as DialogueEvent} 
           resolve={actions.endEvent} 
         />
       )
@@ -64,7 +91,7 @@ export default function Home() {
     case(EVENT_TYPES.COMBAT):
       return (
         <CombatLayout 
-          event={state.events.current as CombatEvent} 
+          event={state.event as CombatEvent} 
           resolve={actions.endEvent} 
         />
       )

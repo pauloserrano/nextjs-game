@@ -7,15 +7,15 @@ export * from "./dialogue.types"
 export * from "./quest.types"
 
 export interface GameState {
+  currentMap?: Map
+  daytime?: DAYTIMES
   characters: {
     active: CharacterSheet[],
     idle: CharacterSheet[]
   }
-  events: {
-    current: Event | null,
-    queued: Event[]
+  event?: Event
+  quests: {
+    ongoing: Quest[],
+    completed: Quest[]
   }
-  quests: Quest[]
-  currentMap?: Map
-  daytime?: DAYTIMES
 }

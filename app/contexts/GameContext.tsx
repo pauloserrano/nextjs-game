@@ -30,19 +30,13 @@ export const GameReducer = (state: GameState, action: GameAction): GameState => 
     case(GAME_REDUCER_ACTIONS.START_EVENT):
       return {
         ...state,
-        events: {
-          ...state.events,
-          current: action.payload,
-        },
+        event: action.payload,
       }
       
     case(GAME_REDUCER_ACTIONS.END_EVENT):
     return {
       ...state,
-      events: {
-        ...state.events,
-        current: null
-      },
+      event: undefined,
     }
 
     case(GAME_REDUCER_ACTIONS.ADD_TO_PARTY):
@@ -75,15 +69,21 @@ export const GameReducer = (state: GameState, action: GameAction): GameState => 
     case(GAME_REDUCER_ACTIONS.ADD_QUEST):
       return {
         ...state,
-        quests: [...state.quests, action.payload]
+        quests: {
+          ...state.quests,
+          ongoing: [...state.quests.ongoing, action.payload],
+        }
       }
     
     case(GAME_REDUCER_ACTIONS.UPDATE_QUEST):
-      const quests = state.quests.filter(quest => !quest.id === action.payload.id)
+      //const quests = state.quests.filter(quest => !quest.id === action.payload.id)
 
       return {
         ...state,
-        quests: [...quests, action.payload]
+        quests: {
+          ...state.quests,
+          ongoing: [...state.quests.ongoing],
+        }
       }
 
     default:
@@ -94,8 +94,7 @@ export const GameReducer = (state: GameState, action: GameAction): GameState => 
 
 const initialState: GameState = {
   characters: { active: [], idle: [] },
-  events: { current: null, queued: [] },
-  quests: []
+  quests: { ongoing: [], completed: [] }
 }
 
 interface GameContextState {

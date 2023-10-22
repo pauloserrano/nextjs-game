@@ -17,34 +17,11 @@ const volkhov = Volkhov({ subsets: ["latin"], weight: ["400", "700"]})
 
 export function OverworldLayout() {
   const { state: { currentMap, daytime, characters, quests }} = useGameContext()
-  const eventHandler = useEvent()
+  const { dispatch } = useCustomEvent()
   const router = useRouter()
-  const { listen, dispatch, remove } = useCustomEvent()
 
-  function getMapActions(): MapAction[] {
-    const questActions: MapAction[] = []
-    const activeQuests = quests.filter(quest => !quest.isCompleted)
-
-    for(let i = 0; i < activeQuests.length; i++) {
-      const currStep = quests[i].steps.find(step => !step.isCompleted)
-
-      if (currStep?.actions){
-        currStep.actions.forEach(action => {
-          if (action.location === currentMap) questActions.push(action)
-        })
-      }
-    }
-
-    let mapActions: MapAction[] = []
-
-    if (currentMap){
-      mapActions = [...currentMap.actions]
-    }
-    
-    return [
-      ...questActions,
-      ...mapActions
-    ]
+  function getMapActions(): MapAction[] {    
+    return currentMap?.actions || []
   }
 
   return (

@@ -32,7 +32,7 @@ export function useGameContext() {
   }
 
   const addQuest = (quest: Quest) => {
-    const knownQuest = state.quests.some(ongoingQuest => ongoingQuest.id === quest.id)
+    const knownQuest = state.quests.ongoing.some(ongoingQuest => ongoingQuest.id === quest.id)
     
     if (!knownQuest) {
       dispatch({ type: GAME_REDUCER_ACTIONS.ADD_QUEST, payload: quest })

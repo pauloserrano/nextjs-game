@@ -1,37 +1,33 @@
-import { Map, MapAction } from "./map.types"
+import { EVENT_TYPES } from "./event.types"
+import { MAPS_ID, Map, MapAction } from "./map.types"
 
 export const enum QUESTS_ID {
   DEMO_001,
   DEMO_002
 }
 
-export interface QuestAction extends MapAction {
-  location: Map
+const enum REQUIREMENT_TYPE {
+  LEVEL,
 }
 
-export interface Quest {
-  id: QUESTS_ID
-  name: string
-  description: string
-  steps: {
-    name?: string
-    description: string
-    actions?: QuestAction[]
-    isCompleted: boolean
-    onStart?: () => void
-  }[]
-  requirements?: {}[]
-  rewards?: {}
-  isCompleted: boolean
+const enum REWARD_TYPE {
+  MONEY,
+  XP
+}
+
+export interface QuestAction extends MapAction {
+  location: MAPS_ID
 }
 
 interface QuestStep {
-  type: REWARD_TYPE
-  value: any
-}
-
-const enum REQUIREMENT_TYPE {
-
+  completed: boolean
+  description: string
+  action?: QuestAction
+  trigger: {
+    type: EVENT_TYPES,
+    condition: (event: any) => void
+    callback: () => void
+  }
 }
 
 interface QuestRequirements {
@@ -39,11 +35,17 @@ interface QuestRequirements {
   value: any
 }
 
-const enum REWARD_TYPE {
-  
-}
-
 interface QuestReward {
   type: REWARD_TYPE
   value: any
+}
+
+export interface Quest {
+  id: QUESTS_ID
+  name: string
+  description: string
+  steps: QuestStep[]
+  requirements?: QuestRequirements[]
+  rewards?: QuestReward[]
+  completed: boolean
 }
