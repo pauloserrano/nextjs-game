@@ -3,10 +3,9 @@ import { createEvent } from "../helpers";
 
 const Demo: Map = {
   id: MAPS_ID.DEMO,
-  name: "Demo",
-  src: "/assets/images/maps/demo.png",
+  name: "Living Room",
+  src: "/assets/images/environments/living-room.png",
   actions: [
-    { label: "Notice Board", event: { type: EVENT_TYPES.INTERACT, data: {} }},
     { label: "Training Grounds", event: createEvent.combat()},
     { label: "Talk to Someone", event: createEvent.dialogue(DIALOGUE_ID.INTRO)},
     { label: "Go Outside", event: createEvent.travel(MAPS_ID.OUTSIDE)},
@@ -15,9 +14,10 @@ const Demo: Map = {
 
 const Outside: Map = {
   id: MAPS_ID.OUTSIDE,
-  name: "Outside",
-  src: "/assets/images/maps/outside.png",
+  name: "Corridor",
+  src: "/assets/images/environments/corridor.png",
   actions: [
+    { label: "Notice Board", event: { type: EVENT_TYPES.INTERACT, data: {} }},
     { label: "Go Inside", event: createEvent.travel(MAPS_ID.DEMO)},
   ]
 }
@@ -46,6 +46,12 @@ const Corridor: Environment = {
   src: "/assets/images/environments/corridor.png"
 }
 
+const CityCenter: Environment = {
+  id: MAPS_ID.CITY_CENTER,
+  name: "City Center",
+  src: "/assets/images/environments/corridor.png"
+}
+
 export const maps = {
   [Demo.id]: Demo,
   [Outside.id]: Outside,
@@ -55,5 +61,6 @@ export const environments = {
   [LivingRoom.id]: LivingRoom,
   [Bedroom.id]: Bedroom,
   [Kitchen.id]: Kitchen,
-  [Corridor.id]: Corridor
+  [Corridor.id]: Corridor,
+  [CityCenter.id]: CityCenter
 }

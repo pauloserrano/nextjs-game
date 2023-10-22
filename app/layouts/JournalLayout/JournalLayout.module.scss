@@ -93,9 +93,9 @@
   gap: 2rem;
 
   h3 {
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 2rem;
     border: 1px solid #E8CC70;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-weight: bold;
   }
 
@@ -124,13 +124,16 @@
   .close-btn {
     font-size: 1rem;
     padding: 0.5rem 2rem;
-    border: transparent;
-    border-radius: 0.5rem;
+    border: 1px solid #E8CC70;
+    border-radius: 0.25rem;
     color: #fff;
-    background-color: #746638;
+    text-decoration: none;
+    transition: .1s linear all;
     cursor: pointer;
 
     &:hover, &:focus {
+      color: #111;
+      background-color: #E8CC70;
       filter: brightness(1.1)
     }
   }

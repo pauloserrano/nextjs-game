@@ -1,11 +1,11 @@
 "use client"
 
 import { useEffect } from "react";
-import { CHARACTERS_ID, CombatEvent, DAYTIMES, DialogueEvent, EVENT_TYPES, MAPS_ID, QUESTS_ID, TEXT_TYPE } from "@/types";
+import { CHARACTERS_ID, CombatEvent, DAYTIMES, DialogueEvent, EVENT_TYPES, MAPS_ID, QUESTS_ID } from "@/types";
 import { useFactory, useGameContext } from "@/hooks";
 import { CombatLayout, DialogueLayout, OverworldLayout } from "@/layouts";
 import { characters, maps, quests } from "@/data";
-import { JournalLayout } from "./layouts/JournalLayout/JournalLayout";
+import { createEvent } from "./helpers";
 
 
 export default function Home() {
@@ -19,9 +19,16 @@ export default function Home() {
       create.characterSheet(characters[CHARACTERS_ID.ARION]),
       create.characterSheet(characters[CHARACTERS_ID.ELOISE]),
     ])
+
     actions.addQuest(quests[QUESTS_ID.DEMO_001])
     actions.addQuest(quests[QUESTS_ID.DEMO_002])
+
+    actions.queueEvent({...createEvent.combat(), trigger: { locationId: MAPS_ID.OUTSIDE }})
   }, [])
+
+  useEffect(() => {
+    
+  }, [state.currentMap])
 
   switch(state.events.current?.type){
     case(EVENT_TYPES.DIALOGUE):

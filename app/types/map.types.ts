@@ -7,6 +7,7 @@ export const enum MAPS_ID {
   BEDROOM,
   KITCHEN,
   CORRIDOR,
+  CITY_CENTER,
 }
 
 export const enum DAYTIMES {

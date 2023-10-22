@@ -1,7 +1,7 @@
 "use client"
 
 import { createContext, useReducer } from "react";
-import { CharacterSheet, DAYTIMES, GameState } from "@/types";
+import { CharacterSheet, GameState } from "@/types";
 
 export const enum GAME_REDUCER_ACTIONS {
   SET_MAP,
@@ -11,6 +11,7 @@ export const enum GAME_REDUCER_ACTIONS {
   SET_PARTY,
   SET_DAYTIME,
   ADD_QUEST,
+  UPDATE_QUEST,
 }
 
 export interface GameAction {
@@ -75,6 +76,14 @@ export const GameReducer = (state: GameState, action: GameAction): GameState => 
       return {
         ...state,
         quests: [...state.quests, action.payload]
+      }
+    
+    case(GAME_REDUCER_ACTIONS.UPDATE_QUEST):
+      const quests = state.quests.filter(quest => !quest.id === action.payload.id)
+
+      return {
+        ...state,
+        quests: [...quests, action.payload]
       }
 
     default:

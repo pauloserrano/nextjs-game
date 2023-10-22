@@ -12,6 +12,7 @@ export interface Event {
   name?: string
   type: EVENT_TYPES
   data: {}
+  trigger?: any
   resolve?: () => void
 }
 

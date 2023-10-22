@@ -11,9 +11,7 @@ export function ActionButton({ type, name, ...props }: ActionButtonProps) {
   return (
     <li {...props} className={styles["action"]}>
       <ButtonIcon className={styles["action-icon"]} type={type} filled />
-      <p className={styles["action-name"]}>
-        {name}
-      </p>
+      <p className={styles["action-name"]}>{name}</p>
     </li>
   )
 }

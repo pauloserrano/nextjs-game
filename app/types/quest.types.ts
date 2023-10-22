@@ -1,4 +1,3 @@
-import { Event } from "./event.types"
 import { Map, MapAction } from "./map.types"
 
 export const enum QUESTS_ID {
@@ -10,19 +9,41 @@ export interface QuestAction extends MapAction {
   location: Map
 }
 
-interface QuestStep {
-  description: string
-  actions?: QuestAction[]
-  isCompleted: boolean
-  onStart?: () => void
-}
-
 export interface Quest {
   id: QUESTS_ID
   name: string
   description: string
-  isCompleted: boolean
+  steps: {
+    name?: string
+    description: string
+    actions?: QuestAction[]
+    isCompleted: boolean
+    onStart?: () => void
+  }[]
   requirements?: {}[]
   rewards?: {}
-  steps?: QuestStep[]
+  isCompleted: boolean
+}
+
+interface QuestStep {
+  type: REWARD_TYPE
+  value: any
+}
+
+const enum REQUIREMENT_TYPE {
+
+}
+
+interface QuestRequirements {
+  type: REQUIREMENT_TYPE
+  value: any
+}
+
+const enum REWARD_TYPE {
+  
+}
+
+interface QuestReward {
+  type: REWARD_TYPE
+  value: any
 }

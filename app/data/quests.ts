@@ -5,8 +5,8 @@ import { maps } from "./maps";
 
 const DEMO_001: Quest = {
   id: QUESTS_ID.DEMO_001,
-  name: "Go to work!",
-  description: "lorem ipsum",
+  name: "Lorem Ispum",
+  description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem est necessitatibus repellendus dolorum consequuntur. Libero cumque aut molestias alias doloremque.",
   isCompleted: false,
   steps: [
     { 
@@ -14,7 +14,7 @@ const DEMO_001: Quest = {
       actions: [
         {
           label: "Go to the Mines",
-          location: maps[MAPS_ID.DEMO], 
+          location: maps[MAPS_ID.DEMO],
           event: createEvent.travel(MAPS_ID.OUTSIDE),
         }
       ],

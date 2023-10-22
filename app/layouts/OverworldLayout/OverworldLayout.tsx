@@ -3,7 +3,7 @@
 import Image from "next/image"
 import { Comfortaa, Volkhov } from "next/font/google"
 import { useRouter } from "next/navigation"
-import { EVENT_TYPES, MapAction } from "@/types"
+import { MapAction } from "@/types"
 import { Layout } from "@/layouts"
 import { useEvent, useGameContext } from "@/hooks"
 import { Cog, SpeechBubble, Sun, Paper, Chart, Character, Backpack, LinkedRings } from "@/icons"
@@ -16,16 +16,34 @@ const volkhov = Volkhov({ subsets: ["latin"], weight: ["400", "700"]})
 
 
 export function OverworldLayout() {
-  const { state: { currentMap, daytime, characters }} = useGameContext()
+  const { state: { currentMap, daytime, characters, quests }} = useGameContext()
   const eventHandler = useEvent()
   const router = useRouter()
 
   function getMapActions(): MapAction[] {
-    const actions: MapAction[] = []
+    const questActions: MapAction[] = []
+    const activeQuests = quests.filter(quest => !quest.isCompleted)
 
-    currentMap?.actions.forEach(action => actions.push(action))
+    for(let i = 0; i < activeQuests.length; i++) {
+      const currStep = quests[i].steps.find(step => !step.isCompleted)
+
+      if (currStep?.actions){
+        currStep.actions.forEach(action => {
+          if (action.location === currentMap) questActions.push(action)
+        })
+      }
+    }
+
+    let mapActions: MapAction[] = []
+
+    if (currentMap){
+      mapActions = [...currentMap.actions]
+    }
     
-    return actions
+    return [
+      ...questActions,
+      ...mapActions
+    ]
   }
 
   return (
@@ -36,7 +54,7 @@ export function OverworldLayout() {
         </div>
         <h3>{currentMap?.name || ""}</h3>
         <hr />
-        <p onClick={() => eventHandler({ data: {}, type: EVENT_TYPES.INTERACT})}>{daytime || ""}</p>
+        <p>{daytime || ""}</p>
       </div>
 
       <ul className={styles["actions-container"]}>
