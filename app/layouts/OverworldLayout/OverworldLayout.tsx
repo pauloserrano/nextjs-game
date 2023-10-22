@@ -5,7 +5,7 @@ import { Comfortaa, Volkhov } from "next/font/google"
 import { useRouter } from "next/navigation"
 import { MapAction } from "@/types"
 import { Layout } from "@/layouts"
-import { useEvent, useGameContext } from "@/hooks"
+import { useCustomEvent, useEvent, useGameContext } from "@/hooks"
 import { Cog, SpeechBubble, Sun, Paper, Chart, Character, Backpack, LinkedRings } from "@/icons"
 import { ButtonIcon } from "@/components"
 import { ActionButton } from "./ActionButton"
@@ -19,6 +19,7 @@ export function OverworldLayout() {
   const { state: { currentMap, daytime, characters, quests }} = useGameContext()
   const eventHandler = useEvent()
   const router = useRouter()
+  const { listen, dispatch, remove } = useCustomEvent()
 
   function getMapActions(): MapAction[] {
     const questActions: MapAction[] = []
@@ -63,7 +64,7 @@ export function OverworldLayout() {
             key={`${id}-${action.label}`} 
             type={action.event.type} 
             name={action.label}
-            onClick={() => eventHandler(action.event)}
+            onClick={() => dispatch(action.event.type, action.event)}
           />
         ))}
       </ul>

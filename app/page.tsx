@@ -1,15 +1,15 @@
 "use client"
 
 import { useEffect } from "react";
-import { CHARACTERS_ID, CombatEvent, DAYTIMES, DialogueEvent, EVENT_TYPES, MAPS_ID, QUESTS_ID } from "@/types";
-import { useFactory, useGameContext } from "@/hooks";
+import { CHARACTERS_ID, CombatEvent, DAYTIMES, DialogueEvent, EVENT_TYPES, MAPS_ID, QUESTS_ID, TravelEvent } from "@/types";
+import { useCustomEvent, useFactory, useGameContext } from "@/hooks";
 import { CombatLayout, DialogueLayout, OverworldLayout } from "@/layouts";
 import { characters, maps, quests } from "@/data";
-import { createEvent } from "./helpers";
 
 
 export default function Home() {
   const { state, actions } = useGameContext()
+  const { listen, remove } = useCustomEvent()
   const { create } = useFactory()
 
   useEffect(() => {
@@ -22,13 +22,35 @@ export default function Home() {
 
     actions.addQuest(quests[QUESTS_ID.DEMO_001])
     actions.addQuest(quests[QUESTS_ID.DEMO_002])
-
-    actions.queueEvent({...createEvent.combat(), trigger: { locationId: MAPS_ID.OUTSIDE }})
   }, [])
 
   useEffect(() => {
+    // Handlers
+    const travelHandler = ({ detail }: { detail: TravelEvent }) => {
+      const { data: { mapId }} = detail as TravelEvent
+      actions.setMap(maps[mapId])
+    }
+
+    const dialogueHandler = ({ detail: dialogue }: { detail: DialogueEvent }) => {
+      actions.startEvent(dialogue)
+    }
     
-  }, [state.currentMap])
+    const combatHandler = ({ detail: combat }: { detail: CombatEvent }) => {
+      actions.startEvent(combat)
+    }
+
+    // Listeners
+    listen(EVENT_TYPES.TRAVEL, travelHandler)
+    listen(EVENT_TYPES.DIALOGUE, dialogueHandler)
+    listen(EVENT_TYPES.COMBAT, combatHandler)
+
+    // Cleanup
+    return () => {
+      remove(EVENT_TYPES.TRAVEL, travelHandler)
+      remove(EVENT_TYPES.DIALOGUE, dialogueHandler)
+      remove(EVENT_TYPES.COMBAT, combatHandler)
+    }
+  }, [])
 
   switch(state.events.current?.type){
     case(EVENT_TYPES.DIALOGUE):
@@ -47,8 +69,6 @@ export default function Home() {
         />
       )
   }
-
-  //return <JournalLayout />
 
   return (
     <OverworldLayout />
