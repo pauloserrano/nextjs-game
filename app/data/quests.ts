@@ -1,4 +1,4 @@
-import { EVENT_TYPES, MAPS_ID, QUESTS_ID, Quest, TravelEvent } from "../types";
+import { CombatEvent, EVENT_TYPES, MAPS_ID, QUESTS_ID, Quest, TravelEvent } from "../types";
 import { createEvent } from "../helpers";
 import { maps } from "./maps";
 
@@ -11,6 +11,7 @@ const DEMO_001: Quest = {
   steps: [
     { 
       description: "Travel to the Mines",
+      completed: false,
       action: {
         label: "Go to the Mines",
         location: MAPS_ID.DEMO,
@@ -19,13 +20,30 @@ const DEMO_001: Quest = {
       trigger: {
         type: EVENT_TYPES.TRAVEL,
         condition: (event: TravelEvent) => event.data.mapId === MAPS_ID.OUTSIDE,
-        callback: () => { console.log("working!") }
       },
-      completed: false
+    }
+  ],
+}
+
+
+const DEMO_002: Quest = {
+  id: QUESTS_ID.DEMO_002,
+  name: "Combat Test",
+  description: "Lorem ispum",
+  completed: false,
+  steps: [
+    { 
+      description: "Get into Combat",
+      completed: false,
+      trigger: {
+        type: EVENT_TYPES.COMBAT,
+        condition: () => true,
+      },
     }
   ],
 }
 
 export const quests = {
-  [DEMO_001.id]: DEMO_001
+  [DEMO_001.id]: DEMO_001,
+  [DEMO_002.id]: DEMO_002,
 }

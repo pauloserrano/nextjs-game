@@ -89,6 +89,9 @@ export function JournalLayout() {
           <article className={styles["info-container"]}>
             <h3>{selectedItem.name}</h3>
             <p>{selectedItem.description}</p>
+            {selectedItem.steps.map((step: any, id: number) => (
+              <span key={id} className={step.completed && styles.done}>{step.description}</span>
+            ))}
           </article>
         )}
       </div>

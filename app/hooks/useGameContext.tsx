@@ -39,6 +39,10 @@ export function useGameContext() {
     }
   }
 
+  const updateQuest = (quest: Quest) => {
+    dispatch({ type: GAME_REDUCER_ACTIONS.UPDATE_QUEST, payload: quest })
+  }
+
   return { 
     state, 
     actions: {
@@ -48,7 +52,8 @@ export function useGameContext() {
       addToParty,
       setParty,
       setDaytime,
-      addQuest
+      addQuest,
+      updateQuest,
     }
   }
 }

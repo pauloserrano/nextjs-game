@@ -76,7 +76,8 @@ export const GameReducer = (state: GameState, action: GameAction): GameState => 
       }
     
     case(GAME_REDUCER_ACTIONS.UPDATE_QUEST):
-      //const quests = state.quests.filter(quest => !quest.id === action.payload.id)
+      const questId = state.quests.ongoing.findIndex(quest => quest.id === action.payload.id)
+      state.quests.ongoing[questId] = action.payload
 
       return {
         ...state,

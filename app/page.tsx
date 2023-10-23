@@ -20,6 +20,7 @@ export default function Home() {
       create.characterSheet(characters[CHARACTERS_ID.ELOISE]),
     ])
     actions.addQuest(quests[QUESTS_ID.DEMO_001])
+    actions.addQuest(quests[QUESTS_ID.DEMO_002])
   }, [])
 
   useEffect(() => {
@@ -62,7 +63,17 @@ export default function Home() {
       const callback = (e: any) => {
         if (!currentStep?.trigger.condition(e.detail)) return
 
-        currentStep.trigger.callback()
+        if (!currentStep.progress) {
+          currentStep.completed = true
+        } else {
+          currentStep.progress!.tracker += 1
+
+          if (currentStep.progress?.target === currentStep.progress?.tracker){
+            currentStep.completed = true
+          }
+        }
+        actions.updateQuest(quest)
+        //currentStep.update()
       }
 
       if (currentStep !== undefined){

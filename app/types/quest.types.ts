@@ -23,10 +23,11 @@ interface QuestStep {
   completed: boolean
   description: string
   action?: QuestAction
+  progress?: { tracker: number, target: number }
+  update?: () => void
   trigger: {
     type: EVENT_TYPES,
     condition: (event: any) => void
-    callback: () => void
   }
 }
 
