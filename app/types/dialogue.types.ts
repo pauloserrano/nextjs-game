@@ -3,7 +3,8 @@ import { Event } from "./event.types"
 import { Environment, Map } from "./map.types"
 
 export const enum DIALOGUE_ID {
-  INTRO
+  INTRO,
+  MINES
 }
 
 export const enum TEXT_TYPE {

@@ -1,6 +1,5 @@
-import { CombatEvent, EVENT_TYPES, MAPS_ID, QUESTS_ID, Quest, TravelEvent } from "../types";
+import { CombatEvent, DIALOGUE_ID, EVENT_TYPES, MAPS_ID, QUESTS_ID, Quest, TravelEvent } from "../types";
 import { createEvent } from "../helpers";
-import { maps } from "./maps";
 
 
 const DEMO_001: Quest = {
@@ -12,23 +11,24 @@ const DEMO_001: Quest = {
     { 
       description: "Travel to the Mines",
       completed: false,
+      onCompleteEvent: createEvent.dialogue(DIALOGUE_ID.MINES),
       action: {
         label: "Go to the Mines",
         location: MAPS_ID.DEMO,
-        event: createEvent.travel(MAPS_ID.OUTSIDE),
+        event: createEvent.travel(MAPS_ID.MINES),
       },
       trigger: {
         type: EVENT_TYPES.TRAVEL,
-        condition: (event: TravelEvent) => event.data.mapId === MAPS_ID.OUTSIDE,
+        condition: (event: TravelEvent) => event.data.mapId === MAPS_ID.MINES,
       },
-    }
+    },
   ],
 }
 
 
 const DEMO_002: Quest = {
   id: QUESTS_ID.DEMO_002,
-  name: "Combat Test",
+  name: "Order Test",
   description: "Lorem ispum",
   completed: false,
   steps: [
@@ -37,6 +37,14 @@ const DEMO_002: Quest = {
       completed: false,
       trigger: {
         type: EVENT_TYPES.COMBAT,
+        condition: () => true,
+      },
+    },
+    { 
+      description: "Talk to Someone",
+      completed: false,
+      trigger: {
+        type: EVENT_TYPES.DIALOGUE,
         condition: () => true,
       },
     }

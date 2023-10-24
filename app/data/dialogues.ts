@@ -34,11 +34,18 @@ const intro: RawDialogue[] = [
   },
   { 
     text: ["Hurry up! You have 10 minutes to get there!"], 
-    speakerId: CHARACTERS_ID.ELOISE
+    speakerId: CHARACTERS_ID.ELOISE,
+    event: createEvent.quest(QUESTS_ID.DEMO_001)
   },
 ]
 
+const mines: RawDialogue[] = [
+  { 
+    text: [`Placeholder`],
+  },
+]
 
 export const dialogues = {
   [DIALOGUE_ID.INTRO]: rawDialogueFormatter(intro),
+  [DIALOGUE_ID.MINES]: rawDialogueFormatter(mines)
 }

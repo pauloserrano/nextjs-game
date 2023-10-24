@@ -22,6 +22,15 @@ const Outside: Map = {
   ]
 }
 
+const Mines: Map = {
+  id: MAPS_ID.MINES,
+  name: "Mines",
+  src: "/assets/images/maps/demo.png",
+  actions: [
+    { label: "Go Back", event: createEvent.travel(MAPS_ID.DEMO)},
+  ]
+}
+
 const LivingRoom: Environment = {
   id: MAPS_ID.LIVING_ROOM,
   name: "Living Room",
@@ -49,12 +58,13 @@ const Corridor: Environment = {
 const CityCenter: Environment = {
   id: MAPS_ID.CITY_CENTER,
   name: "City Center",
-  src: "/assets/images/environments/corridor.png"
+  src: "/assets/images/environments/city-center.png"
 }
 
 export const maps = {
   [Demo.id]: Demo,
   [Outside.id]: Outside,
+  [Mines.id]: Mines
 }
 
 export const environments = {
@@ -62,5 +72,5 @@ export const environments = {
   [Bedroom.id]: Bedroom,
   [Kitchen.id]: Kitchen,
   [Corridor.id]: Corridor,
-  [CityCenter.id]: CityCenter
+  [CityCenter.id]: CityCenter,
 }

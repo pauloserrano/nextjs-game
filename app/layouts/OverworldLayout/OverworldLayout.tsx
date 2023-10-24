@@ -20,8 +20,21 @@ export function OverworldLayout() {
   const { dispatch } = useCustomEvent()
   const router = useRouter()
 
-  function getMapActions(): MapAction[] {    
-    return currentMap?.actions || []
+  function getMapActions(): MapAction[] {
+    const questActions: any = []
+    
+    quests.ongoing.forEach(quest => {
+      const currentStep = quest.steps.find(step => !step.completed)
+
+      if (currentStep?.action && (currentStep.action.location === currentMap?.id)) {
+        questActions.push(currentStep.action)
+      }
+    })
+
+    return [
+      ...questActions,
+      ...currentMap?.actions || []
+    ]
   }
 
   return (

@@ -19,14 +19,13 @@ export default function Home() {
       create.characterSheet(characters[CHARACTERS_ID.ARION]),
       create.characterSheet(characters[CHARACTERS_ID.ELOISE]),
     ])
-    actions.addQuest(quests[QUESTS_ID.DEMO_001])
-    actions.addQuest(quests[QUESTS_ID.DEMO_002])
   }, [])
 
   useEffect(() => {
-    // Handlers
     const travelHandler = ({ detail }: { detail: TravelEvent }) => {
       const { data: { mapId }} = detail as TravelEvent
+      console.log(maps)
+      console.log(mapId)
       actions.setMap(maps[mapId])
     }
 
@@ -38,12 +37,10 @@ export default function Home() {
       actions.startEvent(combat)
     }
 
-    // Listeners
     listen(EVENT_TYPES.TRAVEL, travelHandler)
     listen(EVENT_TYPES.DIALOGUE, dialogueHandler)
     listen(EVENT_TYPES.COMBAT, combatHandler)
 
-    // Cleanup
     return () => {
       remove(EVENT_TYPES.TRAVEL, travelHandler)
       remove(EVENT_TYPES.DIALOGUE, dialogueHandler)
@@ -52,7 +49,9 @@ export default function Home() {
   }, [])
 
   useEffect(() => {
-    if (!state.quests.ongoing) return
+    if (state.quests.ongoing.length === 0) {
+      return
+    }
 
     const triggers: any = []
 
@@ -61,23 +60,29 @@ export default function Home() {
       const currentStep = quest.steps.find((step) => !step.completed)
 
       const callback = (e: any) => {
+        // Check if event matches condition
         if (!currentStep?.trigger.condition(e.detail)) return
-
-        if (!currentStep.progress) {
-          currentStep.completed = true
+        
+        // Updates the quest step accordingly
+        if (currentStep.update) {
+          currentStep.update(currentStep)
+          
         } else {
-          currentStep.progress!.tracker += 1
-
-          if (currentStep.progress?.target === currentStep.progress?.tracker){
-            currentStep.completed = true
-          }
+          currentStep.completed = true
         }
+        // Update the quest state
         actions.updateQuest(quest)
-        //currentStep.update()
+        
+        if (currentStep.completed && currentStep.onCompleteEvent){
+          actions.startEvent(currentStep.onCompleteEvent)
+        }
       }
 
-      if (currentStep !== undefined){
+      if (currentStep){
+        // Set up event listener
         listen(currentStep.trigger.type, callback)
+        
+        // Store the added event for cleanup
         triggers.push({ type: currentStep.trigger.type, callback: callback })
       }
     }

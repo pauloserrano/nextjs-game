@@ -1,4 +1,4 @@
-import { EVENT_TYPES } from "./event.types"
+import { EVENT_TYPES, Event } from "./event.types"
 import { MAPS_ID, Map, MapAction } from "./map.types"
 
 export const enum QUESTS_ID {
@@ -23,8 +23,9 @@ interface QuestStep {
   completed: boolean
   description: string
   action?: QuestAction
-  progress?: { tracker: number, target: number }
-  update?: () => void
+  progress?: any
+  update?: (step: QuestStep) => void
+  onCompleteEvent?: Event
   trigger: {
     type: EVENT_TYPES,
     condition: (event: any) => void
