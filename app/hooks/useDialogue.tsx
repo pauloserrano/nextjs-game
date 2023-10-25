@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Character, CHARACTERS_ID, DIALOGUE_ID, Environment, Map } from "@/types";
-import { characters, dialogues } from "@/data";
+import { Character, CHARACTERS_ID, DIALOGUE_ID, Map } from "@/types";
+import { characters, dialogues, maps } from "@/data";
 
 interface useDialogueProps {
   dialogueId: DIALOGUE_ID
@@ -12,7 +12,7 @@ export function useDialogue({ dialogueId, end }: useDialogueProps) {
   const [textIndex, setTextIndex] = useState<number>(0)
   const [active, setActive] = useState<Character>()
   const [npc, setNpc] = useState<Character>()
-  const [background, setBackground] = useState<Environment | Map>()
+  const [background, setBackground] = useState<Map>()
   
   
   useEffect(() => {
@@ -26,10 +26,11 @@ export function useDialogue({ dialogueId, end }: useDialogueProps) {
   }, [])
 
   useEffect(() => {
-    if (dialogue.background) {
-      setBackground(dialogue.background)
+    if (dialogue.backgroundId) {
+      console.log(maps[dialogue.backgroundId])
+      setBackground(maps[dialogue.backgroundId])
     }
-  }, [dialogue.background])
+  }, [dialogue.backgroundId])
 
   const next = (key?: number) => {
     const isLastText = (textIndex === dialogue.text.length - 1)

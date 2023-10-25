@@ -1,10 +1,10 @@
-import { DIALOGUE_ID, EVENT_TYPES, Environment, MAPS_ID, Map } from "@/types";
+import { DIALOGUE_ID, EVENT_TYPES, MAPS_ID, Map } from "@/types";
 import { createEvent } from "../helpers";
 
 const Demo: Map = {
   id: MAPS_ID.DEMO,
   name: "Living Room",
-  src: "/assets/images/environments/living-room.png",
+  src: "/assets/images/maps/living-room.png",
   actions: [
     { label: "Training Grounds", event: createEvent.combat()},
     { label: "Talk to Someone", event: createEvent.dialogue(DIALOGUE_ID.INTRO)},
@@ -15,7 +15,7 @@ const Demo: Map = {
 const Outside: Map = {
   id: MAPS_ID.OUTSIDE,
   name: "Corridor",
-  src: "/assets/images/environments/corridor.png",
+  src: "/assets/images/maps/corridor.png",
   actions: [
     { label: "Notice Board", event: { type: EVENT_TYPES.INTERACT, data: {} }},
     { label: "Go Inside", event: createEvent.travel(MAPS_ID.DEMO)},
@@ -31,46 +31,36 @@ const Mines: Map = {
   ]
 }
 
-const LivingRoom: Environment = {
+const LivingRoom: Map = {
   id: MAPS_ID.LIVING_ROOM,
   name: "Living Room",
-  src: "/assets/images/environments/living-room.png"
+  src: "/assets/images/maps/living-room.png"
 }
 
-const Bedroom: Environment = {
+const Bedroom: Map = {
   id: MAPS_ID.BEDROOM,
   name: "Bedroom",
-  src: "/assets/images/environments/bedroom.png"
+  src: "/assets/images/maps/bedroom.png"
 }
 
-const Kitchen: Environment = {
+const Kitchen: Map = {
   id: MAPS_ID.KITCHEN,
   name: "Kitchen",
-  src: "/assets/images/environments/kitchen.png"
+  src: "/assets/images/maps/kitchen.png"
 }
 
-const Corridor: Environment = {
+const Corridor: Map = {
   id: MAPS_ID.CORRIDOR,
   name: "Corridor",
-  src: "/assets/images/environments/corridor.png"
-}
-
-const CityCenter: Environment = {
-  id: MAPS_ID.CITY_CENTER,
-  name: "City Center",
-  src: "/assets/images/environments/city-center.png"
+  src: "/assets/images/maps/corridor.png"
 }
 
 export const maps = {
   [Demo.id]: Demo,
   [Outside.id]: Outside,
-  [Mines.id]: Mines
-}
-
-export const environments = {
+  [Mines.id]: Mines,
   [LivingRoom.id]: LivingRoom,
   [Bedroom.id]: Bedroom,
   [Kitchen.id]: Kitchen,
   [Corridor.id]: Corridor,
-  [CityCenter.id]: CityCenter,
 }

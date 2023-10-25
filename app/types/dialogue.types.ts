@@ -1,6 +1,6 @@
 import { CHARACTERS_ID } from "./character.types"
 import { Event } from "./event.types"
-import { Environment, Map } from "./map.types"
+import { MAPS_ID } from "./map.types"
 
 export const enum DIALOGUE_ID {
   INTRO,
@@ -31,7 +31,7 @@ export interface RawDialogue {
   speakerId?: CHARACTERS_ID,
   speed?: number
   event?: Event
-  background?: Environment | Map
+  backgroundId?: MAPS_ID
   choices?: {
     preview: string
     type?: TEXT_TYPE

@@ -5,7 +5,8 @@ export const enum EVENT_TYPES {
   COMBAT = "combat",
   INTERACT = "interact",
   TRAVEL = "travel",
-  QUEST = "quest"
+  QUEST = "quest",
+  NOTIFICATION = "notification"
 }
 
 export interface Event {
@@ -28,15 +29,22 @@ export interface DialogueEvent extends Event {
   }
 }
 
-export interface CombatEvent extends Event{
+export interface CombatEvent extends Event {
   data: {
     playerParty: CharacterSheet[]
     enemyParty: CharacterSheet[]
   }
 }
 
-export interface QuestEvent extends Event{
+export interface QuestEvent extends Event {
   data: {
     questId: QUESTS_ID
+  }
+}
+
+export interface NotificationEvent extends Event {
+  data: {
+    title: string,
+    description?: string
   }
 }

@@ -3,7 +3,7 @@
 import Image from "next/image"
 import { useEffect, useState } from "react"
 import { Layout } from "@/layouts"
-import { useDialogue, useEvent } from "@/hooks"
+import { useCustomEvent, useDialogue } from "@/hooks"
 import { DialogueEvent } from "@/types"
 import styles from "./DialogueLayout.module.scss"
 
@@ -15,7 +15,7 @@ interface DialogueLayoutProps {
 
 export function DialogueLayout({ event, resolve }: DialogueLayoutProps) {
   const [text, setText] = useState<string>("")
-  const eventHandler = useEvent()
+  const { dispatch } = useCustomEvent()
   const { dialogue, active, participants, background, next } = useDialogue({ 
     dialogueId: event.data.dialogueId, 
     end: resolve
@@ -23,7 +23,7 @@ export function DialogueLayout({ event, resolve }: DialogueLayoutProps) {
   
   useEffect(() => {
     if (dialogue.event){
-      eventHandler(dialogue.event)
+      dispatch(dialogue.event.type, dialogue.event)
     }
   }, [dialogue.event])
 
@@ -35,7 +35,6 @@ export function DialogueLayout({ event, resolve }: DialogueLayoutProps) {
 
       return () => clearTimeout(timer)
     }
-
   }, [text])
 
 
@@ -47,9 +46,9 @@ export function DialogueLayout({ event, resolve }: DialogueLayoutProps) {
 
 
   function handleDialogue(id?: number) {
-    const isTyping = (text.length < dialogue.text.length)
+    const finishedTyping = (text.length === dialogue.text.length)
     
-    if (isTyping){
+    if (!finishedTyping){
       setText(dialogue.text)
       return
     }
@@ -60,7 +59,7 @@ export function DialogueLayout({ event, resolve }: DialogueLayoutProps) {
   function isActive(id: number) {
     return (active?.id === id)
   }
-  
+    
   return (
     <Layout background={background} className={styles.container}>
       <div className={`${styles["player-side"]} ${isActive(participants.controlled?.id) && styles.active}`}>

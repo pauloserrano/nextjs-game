@@ -1,0 +1,38 @@
+@keyframes slide-open {
+  from {
+    top: -10rem;
+    opacity: 0;
+  }
+
+  to {
+    top: 0;
+    opacity: 1;
+  }
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: min(100vw, 300px);
+  height: 100px;
+  background-color: beige;
+  padding: 1rem;
+  overflow: hidden;
+
+  animation: slide-open .2s linear;
+}
+
+.title, .description {
+  color: #111;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.description {
+  font-size: 0.9rem;
+}
