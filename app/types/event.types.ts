@@ -12,9 +12,8 @@ export const enum EVENT_TYPES {
 export interface Event {
   name?: string
   type: EVENT_TYPES
-  data: {}
-  trigger?: any
   resolve?: () => void
+  data: {}
 }
 
 export interface TravelEvent extends Event {
@@ -39,12 +38,5 @@ export interface CombatEvent extends Event {
 export interface QuestEvent extends Event {
   data: {
     questId: QUESTS_ID
-  }
-}
-
-export interface NotificationEvent extends Event {
-  data: {
-    title: string,
-    description?: string
   }
 }

@@ -14,25 +14,37 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  position: absolute;
+  gap: 0.5rem;
   width: min(100vw, 300px);
-  height: 100px;
-  background-color: beige;
-  padding: 1rem;
+  left: 50%;
+  top: 1rem;
+  transform: translateX(-50%);
   overflow: hidden;
 
-  animation: slide-open .2s linear;
-}
-
-.title, .description {
-  color: #111;
-}
-
-.title {
-  font-size: 1.25rem;
-  font-weight: bold;
+  li {
+    width: 100%;
+    padding: 1rem;
+    text-align: center;
+    background-color: beige;
+    box-shadow: 0 0 10px #111;
+    animation: slide-in 0.2s linear;
+  }
 }
 
 .description {
+  color: #111;
   font-size: 0.9rem;
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateY(-100%);
+    opacity: 0
+  }
+
+  to {
+    transform: translateY(0%);
+    opacity: 1;
+  }
 }

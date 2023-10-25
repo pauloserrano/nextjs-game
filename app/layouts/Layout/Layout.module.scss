@@ -9,13 +9,3 @@
   object-fit: cover;
   z-index: -1 !important;
 }
-
-.toast-container {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  position: absolute;
-  left: 50%;
-  top: 1rem;
-  transform: translateX(-50%);
-}

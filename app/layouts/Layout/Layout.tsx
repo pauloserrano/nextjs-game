@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import { Inter } from "next/font/google"
-import { useGameContext } from "@/hooks"
+import { useCustomEvent, useGameContext } from "@/hooks"
 import { Map } from "@/app/types"
 import styles from "./Layout.module.scss"
 
@@ -17,7 +17,7 @@ interface LayoutProps {
 
 export function Layout({ background, children, className, ...props }: LayoutProps) {
   const { state: { currentMap }} = useGameContext()
-
+  
   return (
     <div className={`${styles.container} ${inter.className} ${className ? className : ""}`} {...props}>
       { children }

@@ -1,10 +1,11 @@
 "use client"
 
 import { useEffect } from "react";
-import { CHARACTERS_ID, CombatEvent, DAYTIMES, DialogueEvent, EVENT_TYPES, MAPS_ID, NotificationEvent, QuestEvent, TravelEvent } from "@/types";
+import { CHARACTERS_ID, CombatEvent, DAYTIMES, DialogueEvent, EVENT_TYPES, MAPS_ID, QuestEvent, TravelEvent } from "@/types";
 import { useCustomEvent, useFactory, useGameContext } from "@/hooks";
-import { CombatLayout, DialogueLayout, Layout, OverworldLayout } from "@/layouts";
+import { CombatLayout, DialogueLayout, OverworldLayout } from "@/layouts";
 import { characters, maps, quests } from "@/data";
+import { Toast } from "./components";
 
 
 export default function Home() {
@@ -24,17 +25,10 @@ export default function Home() {
 
   // Fixed Action Listeners
   useEffect(() => {
-    const toastHandler = ({ detail }: { detail: NotificationEvent }) => {
-      const { data: { title, description }} = detail
-      console.log({toastData: { title, description }})
-    }
-
     const travelHandler = ({ detail }: { detail: TravelEvent }) => {
       const { data: { mapId }} = detail
       actions.setMap(maps[mapId])
-
-      const notification = { title: `Travelled to ${maps[mapId].name}` }
-      dispatch(EVENT_TYPES.INTERACT, { data: notification })
+      dispatch(EVENT_TYPES.NOTIFICATION, { message: `[TEST] Travel to ${maps[mapId].name}` })
     }
 
     const dialogueHandler = ({ detail: dialogue }: { detail: DialogueEvent }) => {
@@ -47,23 +41,26 @@ export default function Home() {
 
     const questHandler = ({ detail: quest }: { detail: QuestEvent }) => {
       const { data: { questId }} = quest
-      actions.addQuest(quests[questId])
+      const alreadyTaken = state.quests.ongoing.find(quest => quest.id === questId)
+      
+      if (!alreadyTaken){
+        actions.addQuest(quests[questId])
+        dispatch(EVENT_TYPES.NOTIFICATION, { message: `[TEST] New Quest: ${quests[questId].name}` })
+      }
     }
 
     listen(EVENT_TYPES.TRAVEL, travelHandler)
     listen(EVENT_TYPES.DIALOGUE, dialogueHandler)
     listen(EVENT_TYPES.COMBAT, combatHandler)
     listen(EVENT_TYPES.QUEST, questHandler)
-    listen(EVENT_TYPES.INTERACT, toastHandler)
 
     return () => {
       remove(EVENT_TYPES.TRAVEL, travelHandler)
       remove(EVENT_TYPES.DIALOGUE, dialogueHandler)
       remove(EVENT_TYPES.COMBAT, combatHandler)
       remove(EVENT_TYPES.QUEST, questHandler)
-      remove(EVENT_TYPES.INTERACT, toastHandler)
     }
-  }, [])
+  }, [state])
 
   // Temporary Listeners for Quests
   useEffect(() => {
@@ -108,6 +105,27 @@ export default function Home() {
       })
     }
   }, [state.quests.ongoing])
+
+  return (
+    <>
+      <Toast />
+      {state.event?.type === EVENT_TYPES.DIALOGUE && (
+        <DialogueLayout 
+          event={state.event as DialogueEvent} 
+          resolve={actions.endEvent} 
+        />
+      )}
+      {state.event?.type === EVENT_TYPES.COMBAT && (
+        <CombatLayout 
+          event={state.event as CombatEvent} 
+          resolve={actions.endEvent} 
+        />
+      )}
+      {!state.event && (
+        <OverworldLayout />
+      )}
+    </>
+  )
 
   switch(state.event?.type){
     case(EVENT_TYPES.DIALOGUE):
