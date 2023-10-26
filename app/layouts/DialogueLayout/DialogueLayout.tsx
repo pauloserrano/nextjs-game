@@ -21,14 +21,19 @@ export function DialogueLayout({ event, resolve }: DialogueLayoutProps) {
     end: resolve
   })
   
+  // Event Dispatcher
   useEffect(() => {
     if (dialogue.event){
       dispatch(dialogue.event.type, dialogue.event)
     }
   }, [dialogue.event])
 
-  useEffect(() => setText(""), [dialogue.text])
+  // Reset Typing
+  useEffect(() => {
+    setText("")
+  }, [dialogue.text])
 
+  // Dialogue Typing 
   useEffect(() => {
     if (text.length < dialogue.text.length){
       const timer = textTypingEffect()
@@ -37,13 +42,11 @@ export function DialogueLayout({ event, resolve }: DialogueLayoutProps) {
     }
   }, [text])
 
-
   function textTypingEffect() {
     return setTimeout(() => {
       setText((curr) => curr + dialogue.text[text.length]);
     }, dialogue.speed || 10);
   }
-
 
   function handleDialogue(id?: number) {
     const finishedTyping = (text.length === dialogue.text.length)

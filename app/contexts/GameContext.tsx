@@ -12,6 +12,7 @@ export const enum GAME_REDUCER_ACTIONS {
   SET_DAYTIME,
   ADD_QUEST,
   UPDATE_QUEST,
+  UPDATE_SEEN_DIALOGUES,
 }
 
 export interface GameAction {
@@ -87,6 +88,17 @@ export const GameReducer = (state: GameState, action: GameAction): GameState => 
         }
       }
 
+    case(GAME_REDUCER_ACTIONS.UPDATE_SEEN_DIALOGUES):
+      const dialogueId = action.payload
+
+      return {
+        ...state,
+        seenDialogues: {
+          ...state.seenDialogues,
+          [dialogueId]: true
+        }
+      }
+
     default:
       return state
   }
@@ -95,7 +107,8 @@ export const GameReducer = (state: GameState, action: GameAction): GameState => 
 
 const initialState: GameState = {
   characters: { active: [], idle: [] },
-  quests: { ongoing: [], completed: [] }
+  quests: { ongoing: [], completed: [] },
+  seenDialogues: {},
 }
 
 interface GameContextState {

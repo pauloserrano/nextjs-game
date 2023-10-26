@@ -2,13 +2,17 @@
 
 import { useContext } from 'react'
 import { GameContext, GAME_REDUCER_ACTIONS } from '@/contexts'
-import { CharacterSheet, DAYTIMES, Event, Map, Quest } from '@/types'
+import { CharacterSheet, DAYTIMES, DIALOGUE_ID, Event, Map, Quest } from '@/types'
 
 export function useGameContext() {
   const { state, dispatch }  = useContext(GameContext)
 
   const setMap = (map: Map) => {
     dispatch({ type: GAME_REDUCER_ACTIONS.SET_MAP, payload: map })
+  }
+  
+  const setDaytime = (daytime: DAYTIMES) => {
+    dispatch({ type: GAME_REDUCER_ACTIONS.SET_DAYTIME, payload: daytime })
   }
 
   const startEvent = (event: Event) => {
@@ -27,16 +31,16 @@ export function useGameContext() {
     dispatch({ type: GAME_REDUCER_ACTIONS.SET_PARTY, payload: party })
   }
 
-  const setDaytime = (daytime: DAYTIMES) => {
-    dispatch({ type: GAME_REDUCER_ACTIONS.SET_DAYTIME, payload: daytime })
-  }
-
   const addQuest = (quest: Quest) => {
     dispatch({ type: GAME_REDUCER_ACTIONS.ADD_QUEST, payload: quest })
   }
 
   const updateQuest = (quest: Quest) => {
     dispatch({ type: GAME_REDUCER_ACTIONS.UPDATE_QUEST, payload: quest })
+  }
+
+  const updateSeenDialogues = (dialogueId: DIALOGUE_ID) => {
+    dispatch({ type: GAME_REDUCER_ACTIONS.UPDATE_SEEN_DIALOGUES, payload: dialogueId })
   }
 
   return { 
@@ -50,6 +54,7 @@ export function useGameContext() {
       setDaytime,
       addQuest,
       updateQuest,
+      updateSeenDialogues,
     }
   }
 }

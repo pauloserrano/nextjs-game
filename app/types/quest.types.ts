@@ -19,7 +19,7 @@ export interface QuestAction extends MapAction {
   location: MAPS_ID
 }
 
-interface QuestStep {
+export interface QuestStep {
   completed: boolean
   description: string
   action?: QuestAction

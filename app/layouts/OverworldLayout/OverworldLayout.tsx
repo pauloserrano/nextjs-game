@@ -3,7 +3,7 @@
 import Image from "next/image"
 import { Comfortaa, Volkhov } from "next/font/google"
 import { useRouter } from "next/navigation"
-import { EVENT_TYPES, MapAction } from "@/types"
+import { DialogueEvent, EVENT_TYPES, MapAction } from "@/types"
 import { Layout } from "@/layouts"
 import { useCustomEvent, useGameContext } from "@/hooks"
 import { Cog, SpeechBubble, Sun, Paper, Chart, Character, Backpack, LinkedRings } from "@/icons"
@@ -16,7 +16,7 @@ const volkhov = Volkhov({ subsets: ["latin"], weight: ["400", "700"]})
 
 
 export function OverworldLayout() {
-  const { state: { currentMap, daytime, characters, quests }} = useGameContext()
+  const { state: { currentMap, daytime, characters, quests, seenDialogues }} = useGameContext()
   const { dispatch } = useCustomEvent()
   const router = useRouter()
 
@@ -31,10 +31,26 @@ export function OverworldLayout() {
       }
     })
 
+    const mapActions: MapAction[] = []
+    if (currentMap){
+      currentMap.actions?.forEach((action: MapAction) => {
+        if (isActionAvailable(action)) mapActions.push(action)
+      })
+    }
+
     return [
       ...questActions,
-      ...currentMap?.actions || []
+      ...mapActions
     ]
+  }
+
+  function isActionAvailable(action: MapAction) {
+    if (action.event.type === EVENT_TYPES.DIALOGUE) {
+      const { data: { dialogueId }} = action.event as DialogueEvent
+      return !seenDialogues[dialogueId]
+    }
+    
+    return true
   }
 
   return (

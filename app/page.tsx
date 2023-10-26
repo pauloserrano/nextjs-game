@@ -1,11 +1,10 @@
 "use client"
 
 import { useEffect } from "react";
-import { CHARACTERS_ID, CombatEvent, DAYTIMES, DialogueEvent, EVENT_TYPES, MAPS_ID, QuestEvent, TravelEvent } from "@/types";
+import { CHARACTERS_ID, CombatEvent, DAYTIMES, DialogueEvent, EVENT_TYPES, Event, MAPS_ID, QuestEvent, QuestStep, TravelEvent } from "@/types";
 import { useCustomEvent, useFactory, useGameContext } from "@/hooks";
 import { CombatLayout, DialogueLayout, OverworldLayout } from "@/layouts";
 import { characters, maps, quests } from "@/data";
-import { Toast } from "./components";
 
 
 export default function Home() {
@@ -13,7 +12,27 @@ export default function Home() {
   const { dispatch, listen, remove } = useCustomEvent()
   const { create } = useFactory()
 
-  // Temporary Setup for Testing
+  function getNotificationMessage(event: Event) {
+    switch(event.type) {
+      case(EVENT_TYPES.QUEST):
+        const { data: { questId } } = event as QuestEvent
+        return { message: `[TEST] New Quest: ${quests[questId].name}` }
+      
+      case(EVENT_TYPES.QUEST_UPDATE):
+        const description = event.data as string
+        return { message: `[TEST] Completed: ${description}` }
+
+      case(EVENT_TYPES.TRAVEL):
+        const { data: { mapId } } = event as TravelEvent
+        return { message: `[TEST] Travelling to: ${maps[mapId].name}` }
+      
+      default:
+        return { message: "Something went wrong here..." }
+    }
+  }
+
+  // Temporary State Filler for Development
+  // TODO: Implement [Save / Load]
   useEffect(() => {
     actions.setDaytime(DAYTIMES.MORNING)
     actions.setMap(maps[MAPS_ID.DEMO])
@@ -23,12 +42,12 @@ export default function Home() {
     ])
   }, [])
 
-  // Fixed Action Listeners
+  // Default Action Listeners
   useEffect(() => {
     const travelHandler = ({ detail }: { detail: TravelEvent }) => {
       const { data: { mapId }} = detail
       actions.setMap(maps[mapId])
-      dispatch(EVENT_TYPES.NOTIFICATION, { message: `[TEST] Travel to ${maps[mapId].name}` })
+      dispatch(EVENT_TYPES.NOTIFICATION, getNotificationMessage(detail))
     }
 
     const dialogueHandler = ({ detail: dialogue }: { detail: DialogueEvent }) => {
@@ -45,7 +64,7 @@ export default function Home() {
       
       if (!alreadyTaken){
         actions.addQuest(quests[questId])
-        dispatch(EVENT_TYPES.NOTIFICATION, { message: `[TEST] New Quest: ${quests[questId].name}` })
+        dispatch(EVENT_TYPES.NOTIFICATION, getNotificationMessage(quest))
       }
     }
 
@@ -81,7 +100,6 @@ export default function Home() {
         // Updates the quest step accordingly
         if (currentStep.update) {
           currentStep.update(currentStep)
-          
         } else {
           currentStep.completed = true
         }
@@ -90,6 +108,9 @@ export default function Home() {
         
         if (currentStep.completed && currentStep.onCompleteEvent){
           actions.startEvent(currentStep.onCompleteEvent)
+          dispatch(EVENT_TYPES.NOTIFICATION, getNotificationMessage({ 
+            type: EVENT_TYPES.QUEST_UPDATE, data: currentStep.description 
+          }))
         }
       }
 
@@ -106,33 +127,17 @@ export default function Home() {
     }
   }, [state.quests.ongoing])
 
-  return (
-    <>
-      <Toast />
-      {state.event?.type === EVENT_TYPES.DIALOGUE && (
-        <DialogueLayout 
-          event={state.event as DialogueEvent} 
-          resolve={actions.endEvent} 
-        />
-      )}
-      {state.event?.type === EVENT_TYPES.COMBAT && (
-        <CombatLayout 
-          event={state.event as CombatEvent} 
-          resolve={actions.endEvent} 
-        />
-      )}
-      {!state.event && (
-        <OverworldLayout />
-      )}
-    </>
-  )
-
   switch(state.event?.type){
     case(EVENT_TYPES.DIALOGUE):
+      const dialogueEvent = state.event as DialogueEvent
+      
       return (
         <DialogueLayout 
-          event={state.event as DialogueEvent} 
-          resolve={actions.endEvent} 
+          event={dialogueEvent} 
+          resolve={() => {
+            actions.updateSeenDialogues(dialogueEvent.data.dialogueId)
+            actions.endEvent()
+          }} 
         />
       )
 

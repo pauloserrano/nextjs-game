@@ -6,6 +6,7 @@ export const enum EVENT_TYPES {
   INTERACT = "interact",
   TRAVEL = "travel",
   QUEST = "quest",
+  QUEST_UPDATE = "quest_update",
   NOTIFICATION = "notification"
 }
 
