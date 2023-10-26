@@ -5,12 +5,14 @@ import { CHARACTERS_ID, CombatEvent, DAYTIMES, DialogueEvent, EVENT_TYPES, Event
 import { useCustomEvent, useFactory, useGameContext } from "@/hooks";
 import { CombatLayout, DialogueLayout, OverworldLayout } from "@/layouts";
 import { characters, maps, quests } from "@/data";
+import { useToast } from "./hooks/useToast";
 
 
 export default function Home() {
   const { state, actions } = useGameContext()
-  const { dispatch, listen, remove } = useCustomEvent()
+  const { listen, remove } = useCustomEvent()
   const { create } = useFactory()
+  const toast = useToast()
 
   function getNotificationMessage(event: Event) {
     switch(event.type) {
@@ -47,7 +49,7 @@ export default function Home() {
     const travelHandler = ({ detail }: { detail: TravelEvent }) => {
       const { data: { mapId }} = detail
       actions.setMap(maps[mapId])
-      dispatch(EVENT_TYPES.NOTIFICATION, getNotificationMessage(detail))
+      toast(detail)
     }
 
     const dialogueHandler = ({ detail: dialogue }: { detail: DialogueEvent }) => {
@@ -60,11 +62,11 @@ export default function Home() {
 
     const questHandler = ({ detail: quest }: { detail: QuestEvent }) => {
       const { data: { questId }} = quest
-      const alreadyTaken = state.quests.ongoing.find(quest => quest.id === questId)
+      const alreadyTaken = state.quests.find(quest => quest.id === questId)
       
       if (!alreadyTaken){
         actions.addQuest(quests[questId])
-        dispatch(EVENT_TYPES.NOTIFICATION, getNotificationMessage(quest))
+        toast(quest)
       }
     }
 
@@ -83,14 +85,14 @@ export default function Home() {
 
   // Temporary Listeners for Quests
   useEffect(() => {
-    if (state.quests.ongoing.length === 0) {
+    if (state.quests.length === 0) {
       return
     }
 
     const triggers: any = []
 
-    for(let i = 0; i < state.quests.ongoing.length; i++) {
-      const quest = state.quests.ongoing[i]
+    for(let i = 0; i < state.quests.length; i++) {
+      const quest = state.quests[i]
       const currentStep = quest.steps.find((step) => !step.completed)
 
       const callback = (e: any) => {
@@ -108,9 +110,13 @@ export default function Home() {
         
         if (currentStep.completed && currentStep.onCompleteEvent){
           actions.startEvent(currentStep.onCompleteEvent)
-          dispatch(EVENT_TYPES.NOTIFICATION, getNotificationMessage({ 
-            type: EVENT_TYPES.QUEST_UPDATE, data: currentStep.description 
-          }))
+          toast({ type: EVENT_TYPES.QUEST_UPDATE, data: currentStep })
+        }
+
+        const lastStep = quest.steps[quest.steps.length - 1]
+        if (lastStep.completed){
+          actions.completeQuest(quest.id)
+          toast({ type: EVENT_TYPES.QUEST_COMPLETE, data: quest })
         }
       }
 
@@ -125,7 +131,7 @@ export default function Home() {
         remove(listener.type, listener.callback)
       })
     }
-  }, [state.quests.ongoing])
+  }, [state.quests])
 
   switch(state.event?.type){
     case(EVENT_TYPES.DIALOGUE):

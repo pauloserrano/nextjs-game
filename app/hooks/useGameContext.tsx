@@ -2,7 +2,7 @@
 
 import { useContext } from 'react'
 import { GameContext, GAME_REDUCER_ACTIONS } from '@/contexts'
-import { CharacterSheet, DAYTIMES, DIALOGUE_ID, Event, Map, Quest } from '@/types'
+import { CharacterSheet, DAYTIMES, DIALOGUE_ID, Event, Map, QUESTS_ID, Quest } from '@/types'
 
 export function useGameContext() {
   const { state, dispatch }  = useContext(GameContext)
@@ -39,6 +39,10 @@ export function useGameContext() {
     dispatch({ type: GAME_REDUCER_ACTIONS.UPDATE_QUEST, payload: quest })
   }
 
+  const completeQuest = (questId: QUESTS_ID) => {
+    dispatch({ type: GAME_REDUCER_ACTIONS.COMPLETE_QUEST, payload: questId })
+  }
+
   const updateSeenDialogues = (dialogueId: DIALOGUE_ID) => {
     dispatch({ type: GAME_REDUCER_ACTIONS.UPDATE_SEEN_DIALOGUES, payload: dialogueId })
   }
@@ -54,6 +58,7 @@ export function useGameContext() {
       setDaytime,
       addQuest,
       updateQuest,
+      completeQuest,
       updateSeenDialogues,
     }
   }

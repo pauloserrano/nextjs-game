@@ -14,6 +14,7 @@ export function Toast({ ...props}: ToastProps) {
   useEffect(() => {
     const handler = ({ detail }: { detail: { message: string }}) => {
       const newMessage = detail.message
+      console.log({detail})
       setMessages(prev => [newMessage, ...prev])
     }
 

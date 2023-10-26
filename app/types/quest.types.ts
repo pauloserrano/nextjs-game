@@ -49,5 +49,4 @@ export interface Quest {
   steps: QuestStep[]
   requirements?: QuestRequirements[]
   rewards?: QuestReward[]
-  completed: boolean
 }

@@ -69,14 +69,15 @@ export function JournalLayout() {
           <h3>{category}</h3>
           <ul>
             {category === CATEGORIES.QUESTS && (
-              state.quests.ongoing.map((quest) => (
+              state.quests.map((quest) => (
                 <li 
                   key={quest.id} 
+                  onClick={() => setSelectedItem(quest)}
                   className={`
                     ${styles["category-item"]} 
-                    ${selectedItem === quest && styles.selected}
+                    ${selectedItem === quest ? styles.selected : ""}
+                    ${state.completedQuests[quest.id] ? styles.done : ""}
                   `}
-                  onClick={() => setSelectedItem(quest)}
                 >
                   {quest.name}
                 </li>
@@ -87,13 +88,18 @@ export function JournalLayout() {
         </section>
         {selectedItem && (
           <article className={styles["info-container"]}>
-            <h3>{selectedItem.name}</h3>
-            <p>{selectedItem.description}</p>
-            <ul>
-              {selectedItem.steps.map((step: any, id: number) => (
-                <li key={id} className={step.completed && styles.done}>{step.description}</li>
-              ))}
-            </ul>
+            {category === CATEGORIES.QUESTS && (
+               <>
+                <h3>{selectedItem.name}</h3>
+                <p>{selectedItem.description}</p>
+                <ul>
+                  {selectedItem.steps.map((step: any, id: number) => (
+                    <li key={id} className={step.completed ? styles.done : ""}>{step.description}</li>
+                  ))}
+                </ul>
+               </> 
+              )
+            }
           </article>
         )}
       </div>

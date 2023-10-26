@@ -23,7 +23,7 @@ export function OverworldLayout() {
   function getMapActions(): MapAction[] {
     const questActions: any = []
     
-    quests.ongoing.forEach(quest => {
+    quests.forEach(quest => {
       const currentStep = quest.steps.find(step => !step.completed)
 
       if (currentStep?.action && (currentStep.action.location === currentMap?.id)) {

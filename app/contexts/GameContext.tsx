@@ -1,7 +1,7 @@
 "use client"
 
 import { createContext, useReducer } from "react";
-import { CharacterSheet, GameState } from "@/types";
+import { CharacterSheet, GameState, QUESTS_ID } from "@/types";
 
 export const enum GAME_REDUCER_ACTIONS {
   SET_MAP,
@@ -12,6 +12,7 @@ export const enum GAME_REDUCER_ACTIONS {
   SET_DAYTIME,
   ADD_QUEST,
   UPDATE_QUEST,
+  COMPLETE_QUEST,
   UPDATE_SEEN_DIALOGUES,
 }
 
@@ -70,21 +71,24 @@ export const GameReducer = (state: GameState, action: GameAction): GameState => 
     case(GAME_REDUCER_ACTIONS.ADD_QUEST):
       return {
         ...state,
-        quests: {
-          ...state.quests,
-          ongoing: [...state.quests.ongoing, action.payload],
-        }
+        quests: [ ...state.quests, action.payload ]
       }
     
     case(GAME_REDUCER_ACTIONS.UPDATE_QUEST):
-      const questId = state.quests.ongoing.findIndex(quest => quest.id === action.payload.id)
-      state.quests.ongoing[questId] = action.payload
+      const questId = state.quests.findIndex(quest => quest.id === action.payload.id)
+      state.quests[questId] = action.payload
 
       return {
         ...state,
-        quests: {
-          ...state.quests,
-          ongoing: [...state.quests.ongoing],
+        quests: [...state.quests],
+      }
+    
+    case(GAME_REDUCER_ACTIONS.COMPLETE_QUEST):
+      return { 
+        ...state, 
+        completedQuests: { 
+          ...state.completedQuests,
+          [action.payload]: true
         }
       }
 
@@ -107,8 +111,9 @@ export const GameReducer = (state: GameState, action: GameAction): GameState => 
 
 const initialState: GameState = {
   characters: { active: [], idle: [] },
-  quests: { ongoing: [], completed: [] },
+  quests: [],
   seenDialogues: {},
+  completedQuests: {},
 }
 
 interface GameContextState {
